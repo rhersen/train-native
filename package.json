@@ -1,0 +1,22 @@
+{
+  "name": "tv",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "https://secure.hersen.name/tv",
+  "dependencies": {
+    "eslint-plugin-prettier": "^2.6.0",
+    "prettier": "^1.12.1",
+    "react": "^16.3.2",
+    "react-art": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-native-web": "^0.6.1",
+    "react-scripts": "1.1.4"
+  },
+  "proxy": "http://localhost:1337/",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
