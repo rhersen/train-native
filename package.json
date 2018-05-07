@@ -4,13 +4,15 @@
   "private": true,
   "homepage": "https://secure.hersen.name/tv",
   "dependencies": {
+    "enzyme-adapter-react-16": "^1.1.1",
     "eslint-plugin-prettier": "^2.6.0",
     "prettier": "^1.12.1",
     "react": "^16.3.2",
     "react-art": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-native-web": "^0.6.1",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "react-test-renderer": "^16.3.2"
   },
   "proxy": "http://localhost:1337/",
   "scripts": {
@@ -18,5 +20,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "enzyme": "^3.3.0"
   }
 }

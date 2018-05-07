@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
 
 export default class Trains extends Component {
   render() {
-    const { station, train, fetchStation, fetchTrain } = this.props
+    const { station = [], train = [], fetchStation, fetchTrain } = this.props
 
     return (
       <View>
