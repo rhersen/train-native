@@ -60,7 +60,7 @@ function getTrainText(a) {
 function train(a) {
   const s = a.AdvertisedTrainIdent
   if (s) {
-    return s.length === 5 ? s : `${s} `
+    return `${s}     `.substr(0, 5)
   }
 }
 
@@ -74,13 +74,16 @@ function toLocation(a) {
 function time(a) {
   if (a.AdvertisedTimeAtLocation) {
     return (
-      a.AdvertisedTimeAtLocation.substr(11, 5) +
-      (a.EstimatedTimeAtLocation
-        ? a.EstimatedTimeAtLocation.substr(13, 3)
-        : '   ') +
-      (a.TimeAtLocation ? a.TimeAtLocation.substr(13, 3) : '   ')
+      a.AdvertisedTimeAtLocation.substr(11, 2) +
+      minute(a.AdvertisedTimeAtLocation) +
+      minute(a.EstimatedTimeAtLocation) +
+      minute(a.TimeAtLocation)
     )
   }
+}
+
+function minute(t) {
+  return t ? t.substr(13, 3) : '   '
 }
 
 function activity(a) {
@@ -91,8 +94,8 @@ function activity(a) {
 }
 
 function station(a) {
-  if (a.LocationSignature) {
-    const s = `${a.LocationSignature}     `
-    return s.substr(0, 5)
+  const s = a.LocationSignature
+  if (s) {
+    return `${s}     `.substr(0, 5)
   }
 }
