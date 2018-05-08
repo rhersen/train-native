@@ -21,7 +21,11 @@ export default class Trains extends Component {
         <View>
           {station.map(announcement => (
             <Text
-              key={announcement.AdvertisedTrainIdent}
+              key={
+                announcement.AdvertisedTrainIdent
+                  ? announcement.AdvertisedTrainIdent
+                  : 0
+              }
               onPress={() => fetchTrain(announcement.AdvertisedTrainIdent)}
               style={styles.text}
             >
@@ -50,30 +54,45 @@ function getStationText(a) {
 }
 
 function getTrainText(a) {
-  return [station(a), time(a)].join(' ')
+  return [activity(a), station(a), time(a)].join('')
 }
 
 function train(a) {
   const s = a.AdvertisedTrainIdent
-  return s.length === 5 ? s : `${s} `
+  if (s) {
+    return s.length === 5 ? s : `${s} `
+  }
 }
 
 function toLocation(a) {
-  const s = `${a.ToLocation.map(l => l.LocationName)}   `
-  return s.substr(0, 4)
+  if (a.ToLocation) {
+    const s = `${a.ToLocation.map(l => l.LocationName)}   `
+    return s.substr(0, 4)
+  }
 }
 
 function time(a) {
-  return (
-    a.AdvertisedTimeAtLocation.substr(11, 5) +
-    (a.EstimatedTimeAtLocation
-      ? a.EstimatedTimeAtLocation.substr(13, 3)
-      : '   ') +
-    (a.TimeAtLocation ? a.TimeAtLocation.substr(13, 3) : '   ')
-  )
+  if (a.AdvertisedTimeAtLocation) {
+    return (
+      a.AdvertisedTimeAtLocation.substr(11, 5) +
+      (a.EstimatedTimeAtLocation
+        ? a.EstimatedTimeAtLocation.substr(13, 3)
+        : '   ') +
+      (a.TimeAtLocation ? a.TimeAtLocation.substr(13, 3) : '   ')
+    )
+  }
+}
+
+function activity(a) {
+  const s = a.ActivityType
+  if (s) {
+    return `${s.substr(0, 3)} `
+  }
 }
 
 function station(a) {
-  const s = `${a.LocationSignature}   `
-  return s.substr(0, 4)
+  if (a.LocationSignature) {
+    const s = `${a.LocationSignature}     `
+    return s.substr(0, 5)
+  }
 }

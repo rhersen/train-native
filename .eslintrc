@@ -19,7 +19,6 @@
     "block-scoped-var": "error",
     "class-methods-use-this": "error",
     "complexity": "error",
-    "consistent-return": "error",
     "default-case": "error",
     "dot-location": "error",
     "dot-notation": "error",

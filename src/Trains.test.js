@@ -5,6 +5,8 @@ import Trains from './Trains'
 test('empty', () => {
   expect(mount(<Trains />).text()).toBe('')
   expect(mount(<Trains station={[]} train={[]} />).text()).toBe('')
+  expect(mount(<Trains station={[{}]} train={[]} />).text()).toBe('')
+  expect(mount(<Trains station={[]} train={[{}]} />).text()).toBe('')
 })
 
 test('one station announcement', () => {
@@ -25,7 +27,7 @@ test('one train announcement', () => {
   expect(wrapper.children().map(child => child.text())).toEqual([
     '1234',
     '',
-    'Tul  17:30:31:32',
+    'Avg Tul  17:30:31:32',
   ])
 })
 
@@ -36,6 +38,7 @@ function getAnnouncement() {
     TimeAtLocation: '2018-05-04T17:32:00',
     AdvertisedTrainIdent: '1234',
     LocationSignature: 'Tul',
+    ActivityType: 'Avgang',
     ToLocation: [{ LocationName: 'Sub' }],
   }
 }
