@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
-import { Button, StyleSheet, View } from 'react-native'
+import { Button, StyleSheet, Text, View } from 'react-native'
 import Trains from './Trains'
 
 const styles = StyleSheet.create({
   box: { padding: 10 },
+  error: {
+    color: 'red',
+    fontSize: 30,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 })
 
 export default class App extends Component {
@@ -12,11 +18,12 @@ export default class App extends Component {
     this.state = {
       station: [],
       train: [],
+      statusText: 'OK',
     }
   }
 
   render() {
-    const { station, train } = this.state
+    const { station, train, statusText } = this.state
     return (
       <View style={styles.box}>
         <Trains
@@ -25,6 +32,7 @@ export default class App extends Component {
           fetchTrain={trainIdent => this.fetchTrain(trainIdent)}
           fetchStation={location => this.fetchStation(location)}
         />
+        {statusText === 'OK' || <Text style={styles.error}>{statusText}</Text>}
         {!(station.length || train.length) && (
           <Button onPress={() => this.fetchStation('Sst')} title="Sst" />
         )}
@@ -36,12 +44,17 @@ export default class App extends Component {
     const response = await fetch(
       `/json/departures?locations=${locationSignature}&since=0:10&until=0:50`
     )
-    const json = await response.json()
 
-    this.setState({
-      station: json.RESPONSE.RESULT[0].TrainAnnouncement,
-      train: [],
-    })
+    this.setState({ statusText: response.statusText })
+
+    if (response.status === 200) {
+      const json = await response.json()
+
+      this.setState({
+        station: json.RESPONSE.RESULT[0].TrainAnnouncement,
+        train: [],
+      })
+    }
   }
 
   async fetchTrain(advertisedTrainIdent) {
