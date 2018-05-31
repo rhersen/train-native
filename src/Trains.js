@@ -2,18 +2,24 @@ import React, { Component } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
 const styles = StyleSheet.create({
-  text: { fontWeight: 'bold', fontSize: 28, fontFamily: 'monospace' },
+  text: { fontWeight: 'bold', fontSize: 20, fontFamily: 'monospace' },
 })
 
 export default class Trains extends Component {
   render() {
-    const { station = [], train = [], fetchStation, fetchTrain } = this.props
+    const {
+      station = [],
+      train = [],
+      stations = {},
+      fetchStation,
+      fetchTrain,
+    } = this.props
 
     return (
       <View>
         <Text style={styles.text}>
           {station.length
-            ? station[0].LocationSignature
+            ? stationName(station[0].LocationSignature)
             : train.length
               ? train[0].AdvertisedTrainIdent
               : ''}
@@ -46,56 +52,58 @@ export default class Trains extends Component {
         </View>
       </View>
     )
-  }
-}
 
-function getStationText(a) {
-  return [train(a), toLocation(a), time(a)].join('')
-}
+    function getStationText(a) {
+      function train(a) {
+        const s = a.AdvertisedTrainIdent
+        if (s) {
+          return `${s}     `.substr(0, 5)
+        }
+      }
 
-function getTrainText(a) {
-  return [activity(a), station(a), time(a)].join('')
-}
+      return [train(a), toLocation(a), time(a)].join('')
+    }
 
-function train(a) {
-  const s = a.AdvertisedTrainIdent
-  if (s) {
-    return `${s}     `.substr(0, 5)
-  }
-}
+    function toLocation(a) {
+      if (a.ToLocation) {
+        const s = `${a.ToLocation.map(l => stationName(l.LocationName))}   `
+        return `${s}     `.substr(0, 11)
+      }
+    }
 
-function toLocation(a) {
-  if (a.ToLocation) {
-    const s = `${a.ToLocation.map(l => l.LocationName)}   `
-    return s.substr(0, 4)
-  }
-}
+    function getTrainText(a) {
+      return [activity(a), location(a), time(a)].join(' ')
+    }
 
-function time(a) {
-  if (a.AdvertisedTimeAtLocation) {
-    return (
-      a.AdvertisedTimeAtLocation.substr(11, 2) +
-      minute(a.AdvertisedTimeAtLocation) +
-      minute(a.EstimatedTimeAtLocation) +
-      minute(a.TimeAtLocation)
-    )
-  }
-}
+    function activity(a) {
+      const s = a.ActivityType
+      if (s) {
+        return `${s}     `.substr(0, 3)
+      }
+    }
 
-function minute(t) {
-  return t ? t.substr(13, 3) : '   '
-}
+    function location(a) {
+      const name = stationName(a.LocationSignature)
+      return name && `${name}         `.substr(0, 12)
+    }
 
-function activity(a) {
-  const s = a.ActivityType
-  if (s) {
-    return `${s.substr(0, 3)} `
-  }
-}
+    function time(a) {
+      if (a.AdvertisedTimeAtLocation) {
+        return (
+          a.AdvertisedTimeAtLocation.substr(11, 2) +
+          minute(a.AdvertisedTimeAtLocation) +
+          minute(a.EstimatedTimeAtLocation) +
+          minute(a.TimeAtLocation)
+        )
+      }
+    }
 
-function station(a) {
-  const s = a.LocationSignature
-  if (s) {
-    return `${s}     `.substr(0, 5)
+    function minute(t) {
+      return t ? t.substr(13, 3) : '   '
+    }
+
+    function stationName(locationSignature) {
+      return stations[locationSignature] || locationSignature
+    }
   }
 }

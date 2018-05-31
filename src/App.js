@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Button, StyleSheet, Text, View } from 'react-native'
+import map from 'lodash.map'
+import zipObject from 'lodash.zipobject'
 import Trains from './Trains'
 
 const styles = StyleSheet.create({
@@ -18,17 +20,21 @@ export default class App extends Component {
     this.state = {
       station: [],
       train: [],
+      stationNames: {},
       statusText: 'OK',
     }
+    this.fetchStations()
+    this.fetchStation('Sst')
   }
 
   render() {
-    const { station, train, statusText } = this.state
+    const { station, train, stations, statusText } = this.state
     return (
       <View style={styles.box}>
         <Trains
           station={station}
           train={train}
+          stations={stations}
           fetchTrain={trainIdent => this.fetchTrain(trainIdent)}
           fetchStation={location => this.fetchStation(location)}
         />
@@ -38,6 +44,21 @@ export default class App extends Component {
         )}
       </View>
     )
+  }
+
+  async fetchStations() {
+    const response = await fetch('/json/pendel')
+
+    this.setState({ statusText: response.statusText })
+
+    if (response.status === 200) {
+      const json = await response.json()
+      const signatures = map(json, 'LocationSignature')
+      const names = map(json, 'AdvertisedShortLocationName')
+      this.setState({
+        stations: zipObject(signatures, names),
+      })
+    }
   }
 
   async fetchStation(locationSignature) {

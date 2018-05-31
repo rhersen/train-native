@@ -3,31 +3,41 @@ import { mount } from 'enzyme'
 import Trains from './Trains'
 
 test('empty', () => {
-  expect(mount(<Trains />).text()).toBe('')
-  expect(mount(<Trains station={[]} train={[]} />).text()).toBe('')
-  expect(mount(<Trains station={[{}]} train={[]} />).text()).toBe('')
-  expect(mount(<Trains station={[]} train={[{}]} />).text()).toBe('')
+  expect(mount(<Trains stations={stations()} />).text()).toBe('')
+  expect(
+    mount(<Trains stations={stations()} station={[]} train={[]} />).text()
+  ).toBe('')
+  expect(
+    mount(<Trains stations={stations()} station={[{}]} train={[]} />).text()
+  ).toBe('')
+  expect(
+    mount(<Trains stations={stations()} station={[]} train={[{}]} />).text()
+  ).toBe('  ')
 })
 
 test('one station announcement', () => {
-  const wrapper = mount(<Trains station={[getAnnouncement()]} train={[]} />)
+  const wrapper = mount(
+    <Trains stations={stations()} station={[getAnnouncement()]} train={[]} />
+  )
     .childAt(0)
     .childAt(0)
   expect(wrapper.children().map(child => child.text())).toEqual([
-    'Tul',
-    '1234 Sub 17:30:31:32',
+    'Tullinge',
+    '1234 Sundbyberg 17:30:31:32',
     '',
   ])
 })
 
 test('one train announcement', () => {
-  const wrapper = mount(<Trains station={[]} train={[getAnnouncement()]} />)
+  const wrapper = mount(
+    <Trains stations={stations()} station={[]} train={[getAnnouncement()]} />
+  )
     .childAt(0)
     .childAt(0)
   expect(wrapper.children().map(child => child.text())).toEqual([
     '1234',
     '',
-    'Avg Tul  17:30:31:32',
+    'Avg Tullinge     17:30:31:32',
   ])
 })
 
@@ -40,5 +50,12 @@ function getAnnouncement() {
     LocationSignature: 'Tul',
     ActivityType: 'Avgang',
     ToLocation: [{ LocationName: 'Sub' }],
+  }
+}
+
+function stations() {
+  return {
+    Tul: 'Tullinge',
+    Sub: 'Sundbyberg',
   }
 }
