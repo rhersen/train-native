@@ -20,7 +20,7 @@ export default class App extends Component {
     this.state = {
       station: [],
       train: [],
-      stationNames: {},
+      stations: {},
       statusText: 'OK',
     }
     this.fetchStations()

@@ -12,7 +12,7 @@ test('empty', () => {
   ).toBe('')
   expect(
     mount(<Trains stations={stations()} station={[]} train={[{}]} />).text()
-  ).toBe('  ')
+  ).toBe('Tåg undefined mot undefined  ')
 })
 
 test('one station announcement', () => {
@@ -35,7 +35,7 @@ test('one train announcement', () => {
     .childAt(0)
     .childAt(0)
   expect(wrapper.children().map(child => child.text())).toEqual([
-    '1234',
+    'Tåg 1234 mot Sundbyberg ',
     '',
     'Avg Tullinge     17:30:31:32',
   ])

@@ -15,7 +15,9 @@ export default class Trains extends Component {
           {station.length
             ? this.stationName(station[0].LocationSignature)
             : train.length
-              ? train[0].AdvertisedTrainIdent
+              ? `Tåg ${train[0].AdvertisedTrainIdent} mot ${this.toLocation(
+                  train[0]
+                )}`
               : ''}
         </Text>
         <View>
