@@ -29,17 +29,20 @@ export default class App extends Component {
 
   render() {
     const { station, train, stations, statusText } = this.state
+    const noData = !station.length && !train.length
     return (
       <View style={styles.box}>
-        <Trains
-          station={station}
-          train={train}
-          stations={stations}
-          fetchTrain={trainIdent => this.fetchTrain(trainIdent)}
-          fetchStation={location => this.fetchStation(location)}
-        />
+        {!noData && (
+          <Trains
+            station={station}
+            train={train}
+            stations={stations}
+            fetchTrain={trainIdent => this.fetchTrain(trainIdent)}
+            fetchStation={location => this.fetchStation(location)}
+          />
+        )}
         {statusText === 'OK' || <Text style={styles.error}>{statusText}</Text>}
-        {!(station.length || train.length) && (
+        {noData && (
           <Button onPress={() => this.fetchStation('Sst')} title="Sst" />
         )}
       </View>

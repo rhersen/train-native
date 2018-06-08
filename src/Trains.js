@@ -1,16 +1,25 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Animated, StyleSheet, Text, View } from 'react-native'
 
 const styles = StyleSheet.create({
   text: { fontWeight: 'bold', fontSize: 20, fontFamily: 'monospace' },
 })
 
 export default class Trains extends Component {
+  state = {
+    opacity: new Animated.Value(0),
+  }
+
+  componentDidMount() {
+    Animated.timing(this.state.opacity, { toValue: 1, duration: 500 }).start()
+  }
+
   render() {
+    const { opacity } = this.state
     const { station = [], train = [], fetchStation, fetchTrain } = this.props
 
     return (
-      <View>
+      <Animated.View style={{ ...this.props.style, opacity }}>
         <Text style={styles.text}>
           {station.length
             ? this.stationName(station[0].LocationSignature)
@@ -46,7 +55,7 @@ export default class Trains extends Component {
             </Text>
           ))}
         </View>
-      </View>
+      </Animated.View>
     )
   }
 
