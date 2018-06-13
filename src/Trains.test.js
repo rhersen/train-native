@@ -1,23 +1,23 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import Trains from './Trains'
+import Main from './Main'
 
 test('empty', () => {
-  expect(mount(<Trains stations={stations()} />).text()).toBe('')
+  expect(mount(<Main stations={stations()} />).text()).toBe('')
   expect(
-    mount(<Trains stations={stations()} station={[]} train={[]} />).text()
+    mount(<Main stations={stations()} station={[]} train={[]} />).text()
   ).toBe('')
   expect(
-    mount(<Trains stations={stations()} station={[{}]} train={[]} />).text()
+    mount(<Main stations={stations()} station={[{}]} train={[]} />).text()
   ).toBe('')
   expect(
-    mount(<Trains stations={stations()} station={[]} train={[{}]} />).text()
+    mount(<Main stations={stations()} station={[]} train={[{}]} />).text()
   ).toBe('Tåg undefined mot undefined  ')
 })
 
 test('one station announcement', () => {
   const wrapper = mount(
-    <Trains stations={stations()} station={[getAnnouncement()]} train={[]} />
+    <Main stations={stations()} station={[getAnnouncement()]} train={[]} />
   )
     .childAt(0)
     .childAt(0)
@@ -30,7 +30,7 @@ test('one station announcement', () => {
 
 test('one train announcement', () => {
   const wrapper = mount(
-    <Trains stations={stations()} station={[]} train={[getAnnouncement()]} />
+    <Main stations={stations()} station={[]} train={[getAnnouncement()]} />
   )
     .childAt(0)
     .childAt(0)

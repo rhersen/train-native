@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button, StyleSheet, Text, View } from 'react-native'
 import map from 'lodash.map'
 import zipObject from 'lodash.zipobject'
-import Trains from './Trains'
+import Main from './Main'
 
 const styles = StyleSheet.create({
   box: { padding: 10 },
@@ -33,7 +33,7 @@ export default class App extends Component {
     return (
       <View style={styles.box}>
         {!noData && (
-          <Trains
+          <Main
             station={station}
             train={train}
             stations={stations}
