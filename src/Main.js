@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import Stations from './Stations'
-import { stationName, toLocation, activity, time } from './util'
+import { stationName, toLocation } from './util'
+import Trains from './Trains'
 
 const styles = StyleSheet.create({
   text: { fontWeight: 'bold', fontSize: 20, fontFamily: 'monospace' },
@@ -37,27 +38,15 @@ export default class Main extends Component {
             style={styles.text}
           />
         )}
-        <View>
-          {train.map(a => (
-            <Text
-              key={a.LocationSignature + a.ActivityType}
-              onPress={() => fetchStation(a.LocationSignature)}
-              style={styles.text}
-            >
-              {this.getTrainText(a)}
-            </Text>
-          ))}
-        </View>
+        {Boolean(train.length) && (
+          <Trains
+            train={train}
+            stations={stations}
+            fetchStation={fetchStation}
+            style={styles.text}
+          />
+        )}
       </View>
     )
-  }
-
-  getTrainText(a) {
-    return [activity(a), this.location(a), time(a)].join(' ')
-  }
-
-  location(a) {
-    const name = stationName(a.LocationSignature, this.props.stations)
-    return name && `${name}         `.substr(0, 12)
   }
 }
