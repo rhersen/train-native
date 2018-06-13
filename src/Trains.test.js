@@ -36,7 +36,6 @@ test('one train announcement', () => {
     .childAt(0)
   expect(wrapper.children().map(child => child.text())).toEqual([
     'Tåg 1234 mot Sundbyberg ',
-    '',
     'Avg Tullinge     17:30:31:32',
   ])
 })
