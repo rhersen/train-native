@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Animated, Text } from 'react-native'
-import { activity, stationName, time, toLocation } from './util'
+import { activity, stationName, time } from './util'
 
 export default class Trains extends Component {
   state = {
@@ -27,17 +27,6 @@ export default class Trains extends Component {
         ))}
       </Animated.View>
     )
-  }
-
-  getStationText(a) {
-    function train() {
-      const s = a.AdvertisedTrainIdent
-      if (s) {
-        return `${a.AdvertisedTrainIdent}     `.substr(0, 5)
-      }
-    }
-
-    return [train(), toLocation(a, this.props.stations), time(a)].join('')
   }
 
   getTrainText(a) {

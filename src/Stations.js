@@ -13,20 +13,16 @@ export default class Stations extends Component {
 
   render() {
     const { opacity } = this.state
-    const { station = [], stations, fetchTrain, style } = this.props
+    const { station = [], fetchTrain, style } = this.props
     return (
       <Animated.View style={{ opacity }}>
-        {station.map(announcement => (
+        {station.map(a => (
           <Text
-            key={
-              announcement.AdvertisedTrainIdent
-                ? announcement.AdvertisedTrainIdent
-                : 0
-            }
-            onPress={() => fetchTrain(announcement.AdvertisedTrainIdent)}
+            key={a.AdvertisedTrainIdent ? a.AdvertisedTrainIdent : 0}
+            onPress={() => fetchTrain(a.AdvertisedTrainIdent)}
             style={style}
           >
-            {this.getStationText(announcement, stations)}
+            {this.getStationText(a)}
           </Text>
         ))}
       </Animated.View>
@@ -34,13 +30,15 @@ export default class Stations extends Component {
   }
 
   getStationText(a) {
+    const { stations } = this.props
+
+    return [train(), toLocation(a, stations), time(a)].join('')
+
     function train() {
       const s = a.AdvertisedTrainIdent
       if (s) {
-        return `${a.AdvertisedTrainIdent}     `.substr(0, 5)
+        return `${s}     `.substr(0, 5)
       }
     }
-
-    return [train(), toLocation(a, this.props.stations), time(a)].join('')
   }
 }
