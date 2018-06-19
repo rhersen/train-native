@@ -24,7 +24,6 @@ test('one station announcement', () => {
   expect(wrapper.children().map(child => child.text())).toEqual([
     'Tullinge',
     '1234 Sundbyberg 17:30:31:32',
-    '',
   ])
 })
 
