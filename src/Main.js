@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import Stations from './Stations'
+import Station from './Station'
 import { stationName, toLocation } from './util'
-import Trains from './Trains'
+import Train from './Train'
 
 const styles = StyleSheet.create({
   text: { fontWeight: 'bold', fontSize: 20, fontFamily: 'monospace' },
@@ -31,7 +31,7 @@ export default class Main extends Component {
               : ''}
         </Text>
         {Boolean(station.length) && (
-          <Stations
+          <Station
             station={station}
             stations={stations}
             fetchTrain={fetchTrain}
@@ -39,7 +39,7 @@ export default class Main extends Component {
           />
         )}
         {Boolean(train.length) && (
-          <Trains
+          <Train
             train={train}
             stations={stations}
             fetchStation={fetchStation}

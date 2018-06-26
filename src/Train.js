@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Animated, Easing, Text } from 'react-native'
 import { activity, stationName, time } from './util'
 
-export default class Trains extends Component {
+export default class Train extends Component {
   state = {
     opacity: new Animated.Value(0),
   }

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Animated, Easing, Text } from 'react-native'
 import { time, toLocation } from './util'
 
-export default class Stations extends Component {
+export default class Station extends Component {
   state = {
     opacity: new Animated.Value(0),
   }
