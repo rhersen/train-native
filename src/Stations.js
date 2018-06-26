@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Animated, Text } from 'react-native'
+import { Animated, Easing, Text } from 'react-native'
 import { time, toLocation } from './util'
 
 export default class Stations extends Component {
@@ -19,7 +19,14 @@ export default class Stations extends Component {
         {station.map(a => (
           <Text
             key={a.AdvertisedTrainIdent ? a.AdvertisedTrainIdent : 0}
-            onPress={() => fetchTrain(a.AdvertisedTrainIdent)}
+            onPress={() => {
+              Animated.timing(this.state.opacity, {
+                toValue: 0.3,
+                duration: 1000,
+                easing: Easing.out(Easing.cubic),
+              }).start()
+              return fetchTrain(a.AdvertisedTrainIdent)
+            }}
             style={style}
           >
             {this.getStationText(a)}
