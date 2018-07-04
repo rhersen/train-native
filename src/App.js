@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import { Button, StyleSheet, Text, View } from 'react-native'
+import get from 'lodash.get'
 import map from 'lodash.map'
 import zipObject from 'lodash.zipobject'
 import Main from './Main'
+import filterTrain from './filterTrain'
 
 const styles = StyleSheet.create({
   box: { padding: 10 },
@@ -75,7 +77,7 @@ export default class App extends Component {
       const json = await response.json()
 
       this.setState({
-        station: json.RESPONSE.RESULT[0].TrainAnnouncement,
+        station: get(json, 'RESPONSE.RESULT[0].TrainAnnouncement'),
         train: [],
       })
     }
@@ -87,7 +89,7 @@ export default class App extends Component {
 
     this.setState({
       station: [],
-      train: json.RESPONSE.RESULT[0].TrainAnnouncement,
+      train: filterTrain(get(json, 'RESPONSE.RESULT[0].TrainAnnouncement')),
     })
   }
 }

@@ -2,7 +2,7 @@ import { activity, time, toLocation } from './util'
 
 describe('activity', () => {
   it('empty', () => {
-    expect(activity({})).toBeUndefined()
+    expect(activity({})).toBe('   ')
   })
 
   it('returns the 3 first characters', () => {

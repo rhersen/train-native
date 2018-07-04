@@ -1,8 +1,6 @@
 export function activity(a) {
-  const s = a.ActivityType
-  if (s) {
-    return `${s}   `.substr(0, 3)
-  }
+  const s = a.ActivityType || '   '
+  return `${s}   `.substr(0, 3)
 }
 
 export function toLocation(a, stations) {

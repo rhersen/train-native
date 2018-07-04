@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import Station from './Station'
-import { stationName, toLocation } from './util'
+import { stationName } from './util'
 import Train from './Train'
 
 const styles = StyleSheet.create({
@@ -17,15 +17,14 @@ export default class Main extends Component {
       fetchStation,
       fetchTrain,
     } = this.props
-
     return (
       <View style={this.props.style}>
         <Text style={styles.text}>
           {station.length
             ? stationName(station[0].LocationSignature, stations)
             : train.length
-              ? `Tåg ${train[0].AdvertisedTrainIdent} mot ${toLocation(
-                  train[0],
+              ? `Tåg ${train[0].AdvertisedTrainIdent} mot ${this.toLocation(
+                  train,
                   stations
                 )}`
               : ''}
@@ -48,5 +47,14 @@ export default class Main extends Component {
         )}
       </View>
     )
+  }
+
+  toLocation() {
+    const {
+      stations = {},
+      train: [{ ToLocation: key }],
+    } = this.props
+
+    return key ? stations[key] : key
   }
 }
