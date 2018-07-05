@@ -13,10 +13,10 @@ export default class Train extends Component {
 
   render() {
     const { opacity } = this.state
-    const { train = [], fetchStation, style } = this.props
+    const { train = {}, fetchStation, style } = this.props
     return (
       <Animated.View style={{ opacity }}>
-        {train.map(a => (
+        {train.Locations.map(a => (
           <Text
             key={a.LocationSignature + a.ActivityType}
             onPress={() => {

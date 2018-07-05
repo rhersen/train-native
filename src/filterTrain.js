@@ -1,28 +1,31 @@
 import map from 'lodash.map'
+import head from 'lodash.head'
 
 export default trainAnnouncements => {
-  if (!Array.isArray(trainAnnouncements)) {
-    return []
+  if (!Array.isArray(trainAnnouncements) || !trainAnnouncements.length) {
+    return {}
   }
+  const trainAnnouncement = head(trainAnnouncements)
+  const { AdvertisedTrainIdent } = trainAnnouncement
 
-  return map(trainAnnouncements, trainAnnouncement => {
-    const {
-      ActivityType,
-      AdvertisedTimeAtLocation,
-      AdvertisedTrainIdent,
-      EstimatedTimeAtLocation,
-      LocationSignature,
-      TimeAtLocation,
-    } = trainAnnouncement
-
-    return {
-      ActivityType,
-      AdvertisedTimeAtLocation,
-      AdvertisedTrainIdent,
-      EstimatedTimeAtLocation,
-      LocationSignature,
-      TimeAtLocation,
-      ToLocation: map(trainAnnouncement.ToLocation, 'LocationName').join(),
-    }
-  })
+  return {
+    AdvertisedTrainIdent,
+    ToLocation: map(trainAnnouncement.ToLocation, 'LocationName').join(),
+    Locations: map(trainAnnouncements, trainAnnouncement => {
+      const {
+        ActivityType,
+        AdvertisedTimeAtLocation,
+        EstimatedTimeAtLocation,
+        LocationSignature,
+        TimeAtLocation,
+      } = trainAnnouncement
+      return {
+        LocationSignature,
+        ActivityType,
+        AdvertisedTimeAtLocation,
+        EstimatedTimeAtLocation,
+        TimeAtLocation,
+      }
+    }),
+  }
 }

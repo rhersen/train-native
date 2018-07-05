@@ -13,7 +13,7 @@ export default class Main extends Component {
     const {
       station = [],
       stations,
-      train = [],
+      train = {},
       fetchStation,
       fetchTrain,
     } = this.props
@@ -22,8 +22,8 @@ export default class Main extends Component {
         <Text style={styles.text}>
           {station.length
             ? stationName(station[0].LocationSignature, stations)
-            : train.length
-              ? `Tåg ${train[0].AdvertisedTrainIdent} mot ${this.toLocation(
+            : train.AdvertisedTrainIdent
+              ? `Tåg ${train.AdvertisedTrainIdent} mot ${this.toLocation(
                   train,
                   stations
                 )}`
@@ -37,7 +37,7 @@ export default class Main extends Component {
             style={styles.text}
           />
         )}
-        {Boolean(train.length) && (
+        {Boolean(train.AdvertisedTrainIdent) && (
           <Train
             train={train}
             stations={stations}
@@ -52,7 +52,7 @@ export default class Main extends Component {
   toLocation() {
     const {
       stations = {},
-      train: [{ ToLocation: key }],
+      train: { ToLocation: key },
     } = this.props
 
     return key ? stations[key] : key

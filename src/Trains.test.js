@@ -5,14 +5,14 @@ import Main from './Main'
 test('empty', () => {
   expect(mount(<Main stations={stations()} />).text()).toBe('')
   expect(
-    mount(<Main stations={stations()} station={[]} train={[]} />).text()
+    mount(<Main stations={stations()} station={[]} train={{}} />).text()
   ).toBe('')
   expect(
-    mount(<Main stations={stations()} station={[{}]} train={[]} />).text()
+    mount(<Main stations={stations()} station={[{}]} train={{}} />).text()
   ).toBe('')
   expect(
     mount(<Main stations={stations()} station={[]} train={[{}]} />).text()
-  ).toBe('Tåg undefined mot undefined     ')
+  ).toBe('')
 })
 
 test('one station announcement', () => {
@@ -30,7 +30,7 @@ test('one station announcement', () => {
           ToLocation: [{ LocationName: 'Sub' }],
         },
       ]}
-      train={[]}
+      train={{}}
     />
   )
     .childAt(0)
@@ -46,17 +46,19 @@ test('one train announcement', () => {
     <Main
       stations={stations()}
       station={[]}
-      train={[
-        {
-          ActivityType: 'Avgang',
-          AdvertisedTimeAtLocation: '2018-05-04T17:30:00',
-          AdvertisedTrainIdent: '1234',
-          EstimatedTimeAtLocation: '2018-05-04T17:31:00',
-          LocationSignature: 'Tul',
-          TimeAtLocation: '2018-05-04T17:32:00',
-          ToLocation: 'Sub',
-        },
-      ]}
+      train={{
+        AdvertisedTrainIdent: '1234',
+        ToLocation: 'Sub',
+        Locations: [
+          {
+            ActivityType: 'Avgang',
+            AdvertisedTimeAtLocation: '2018-05-04T17:30:00',
+            EstimatedTimeAtLocation: '2018-05-04T17:31:00',
+            LocationSignature: 'Tul',
+            TimeAtLocation: '2018-05-04T17:32:00',
+          },
+        ],
+      }}
     />
   )
     .childAt(0)
@@ -72,17 +74,19 @@ test('announcement without ActivityType', () => {
     <Main
       stations={stations()}
       station={[]}
-      train={[
-        {
-          ActivityType: undefined,
-          AdvertisedTimeAtLocation: '2018-05-04T17:30:00',
-          AdvertisedTrainIdent: '1234',
-          EstimatedTimeAtLocation: '2018-05-04T17:31:00',
-          LocationSignature: 'Tul',
-          TimeAtLocation: '2018-05-04T17:32:00',
-          ToLocation: 'Sub',
-        },
-      ]}
+      train={{
+        AdvertisedTrainIdent: '1234',
+        ToLocation: 'Sub',
+        Locations: [
+          {
+            ActivityType: undefined,
+            AdvertisedTimeAtLocation: '2018-05-04T17:30:00',
+            EstimatedTimeAtLocation: '2018-05-04T17:31:00',
+            LocationSignature: 'Tul',
+            TimeAtLocation: '2018-05-04T17:32:00',
+          },
+        ],
+      }}
     />
   )
     .childAt(0)
@@ -94,7 +98,7 @@ test('announcement without ActivityType', () => {
 })
 
 test('does not crash if the train has no announcements', () => {
-  const wrapper = mount(<Main stations={stations()} train={[]} />)
+  const wrapper = mount(<Main stations={stations()} train={{}} />)
     .childAt(0)
     .childAt(0)
   expect(wrapper.children().map(child => child.text())).toEqual([''])
