@@ -9,9 +9,9 @@ export default trainAnnouncements => {
   const { AdvertisedTrainIdent } = trainAnnouncement
 
   return {
-    AdvertisedTrainIdent,
-    ToLocation: map(trainAnnouncement.ToLocation, 'LocationName').join(),
-    Locations: map(trainAnnouncements, trainAnnouncement => {
+    id: AdvertisedTrainIdent,
+    to: map(trainAnnouncement.ToLocation, 'LocationName').join(),
+    locations: map(trainAnnouncements, trainAnnouncement => {
       const {
         ActivityType,
         AdvertisedTimeAtLocation,
@@ -20,11 +20,11 @@ export default trainAnnouncements => {
         TimeAtLocation,
       } = trainAnnouncement
       return {
-        LocationSignature,
-        ActivityType,
-        AdvertisedTimeAtLocation,
-        EstimatedTimeAtLocation,
-        TimeAtLocation,
+        location: LocationSignature,
+        activity: ActivityType,
+        advertised: AdvertisedTimeAtLocation,
+        estimated: EstimatedTimeAtLocation,
+        actual: TimeAtLocation,
       }
     }),
   }

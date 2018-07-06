@@ -47,15 +47,15 @@ test('one train announcement', () => {
       stations={stations()}
       station={[]}
       train={{
-        AdvertisedTrainIdent: '1234',
-        ToLocation: 'Sub',
-        Locations: [
+        id: '1234',
+        to: 'Sub',
+        locations: [
           {
-            ActivityType: 'Avgang',
-            AdvertisedTimeAtLocation: '2018-05-04T17:30:00',
-            EstimatedTimeAtLocation: '2018-05-04T17:31:00',
-            LocationSignature: 'Tul',
-            TimeAtLocation: '2018-05-04T17:32:00',
+            activity: 'Avgang',
+            advertised: '2018-05-04T17:30:00',
+            estimated: '2018-05-04T17:31:00',
+            location: 'Tul',
+            actual: '2018-05-04T17:32:00',
           },
         ],
       }}
@@ -75,15 +75,15 @@ test('announcement without ActivityType', () => {
       stations={stations()}
       station={[]}
       train={{
-        AdvertisedTrainIdent: '1234',
-        ToLocation: 'Sub',
-        Locations: [
+        id: '1234',
+        to: 'Sub',
+        locations: [
           {
-            ActivityType: undefined,
-            AdvertisedTimeAtLocation: '2018-05-04T17:30:00',
-            EstimatedTimeAtLocation: '2018-05-04T17:31:00',
-            LocationSignature: 'Tul',
-            TimeAtLocation: '2018-05-04T17:32:00',
+            activity: undefined,
+            advertised: '2018-05-04T17:30:00',
+            estimated: '2018-05-04T17:31:00',
+            location: 'Tul',
+            actual: '2018-05-04T17:32:00',
           },
         ],
       }}

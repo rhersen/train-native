@@ -22,11 +22,8 @@ export default class Main extends Component {
         <Text style={styles.text}>
           {station.length
             ? stationName(station[0].LocationSignature, stations)
-            : train.AdvertisedTrainIdent
-              ? `Tåg ${train.AdvertisedTrainIdent} mot ${this.toLocation(
-                  train,
-                  stations
-                )}`
+            : train.id
+              ? `Tåg ${train.id} mot ${this.toLocation(train, stations)}`
               : ''}
         </Text>
         {Boolean(station.length) && (
@@ -37,7 +34,7 @@ export default class Main extends Component {
             style={styles.text}
           />
         )}
-        {Boolean(train.AdvertisedTrainIdent) && (
+        {Boolean(train.id) && (
           <Train
             train={train}
             stations={stations}
@@ -52,7 +49,7 @@ export default class Main extends Component {
   toLocation() {
     const {
       stations = {},
-      train: { ToLocation: key },
+      train: { to: key },
     } = this.props
 
     return key ? stations[key] : key

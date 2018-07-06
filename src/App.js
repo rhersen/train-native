@@ -31,7 +31,7 @@ export default class App extends Component {
 
   render() {
     const { station, train, stations, statusText } = this.state
-    const noData = !station.length && !train.AdvertisedTrainIdent
+    const noData = !station.length && !train.id
     return (
       <View style={styles.box}>
         {!noData && (

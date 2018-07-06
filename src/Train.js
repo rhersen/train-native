@@ -16,16 +16,16 @@ export default class Train extends Component {
     const { train = {}, fetchStation, style } = this.props
     return (
       <Animated.View style={{ opacity }}>
-        {train.Locations.map(a => (
+        {train.locations.map(a => (
           <Text
-            key={a.LocationSignature + a.ActivityType}
+            key={a.location + a.activity}
             onPress={() => {
               Animated.timing(this.state.opacity, {
                 toValue: 0.3,
                 duration: 1000,
                 easing: Easing.out(Easing.cubic),
               }).start()
-              fetchStation(a.LocationSignature)
+              fetchStation(a.location)
             }}
             style={style}
           >
@@ -41,7 +41,7 @@ export default class Train extends Component {
   }
 
   location(a) {
-    const name = stationName(a.LocationSignature, this.props.stations)
+    const name = stationName(a.location, this.props.stations)
     return name && `${name}           `.substr(0, 12)
   }
 }

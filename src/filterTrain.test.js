@@ -38,15 +38,15 @@ describe('filterTrain', () => {
         },
       ])
     ).toEqual({
-      AdvertisedTrainIdent: '2814',
-      ToLocation: 'Bål',
-      Locations: [
+      id: '2814',
+      to: 'Bål',
+      locations: [
         {
-          LocationSignature: 'Nyh',
-          ActivityType: 'Avgang',
-          AdvertisedTimeAtLocation: '2018-06-27T06:40:00',
-          EstimatedTimeAtLocation: '2018-06-27T06:40:00',
-          TimeAtLocation: '2018-06-27T06:40:00',
+          location: 'Nyh',
+          activity: 'Avgang',
+          advertised: '2018-06-27T06:40:00',
+          estimated: '2018-06-27T06:40:00',
+          actual: '2018-06-27T06:40:00',
         },
       ],
     }))
