@@ -77,8 +77,10 @@ export default class App extends Component {
       const json = await response.json()
 
       this.setState({
-        station: get(json, 'RESPONSE.RESULT[0].TrainAnnouncement'),
-        train: [],
+        station: filter.station(
+          get(json, 'RESPONSE.RESULT[0].TrainAnnouncement')
+        ),
+        train: {},
       })
     }
   }

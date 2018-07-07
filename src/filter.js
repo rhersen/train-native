@@ -1,6 +1,10 @@
 import map from 'lodash.map'
 import head from 'lodash.head'
 
+export function station(trainAnnouncements) {
+  return trainAnnouncements
+}
+
 export function train(trainAnnouncements) {
   if (!Array.isArray(trainAnnouncements) || !trainAnnouncements.length) {
     return {}
