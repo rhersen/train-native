@@ -4,7 +4,7 @@ import get from 'lodash.get'
 import map from 'lodash.map'
 import zipObject from 'lodash.zipobject'
 import Main from './Main'
-import filterTrain from './filterTrain'
+import * as filter from './filter'
 
 const styles = StyleSheet.create({
   box: { padding: 10 },
@@ -89,7 +89,7 @@ export default class App extends Component {
 
     this.setState({
       station: [],
-      train: filterTrain(get(json, 'RESPONSE.RESULT[0].TrainAnnouncement')),
+      train: filter.train(get(json, 'RESPONSE.RESULT[0].TrainAnnouncement')),
     })
   }
 }

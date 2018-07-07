@@ -1,7 +1,7 @@
 import map from 'lodash.map'
 import head from 'lodash.head'
 
-export default trainAnnouncements => {
+export function train(trainAnnouncements) {
   if (!Array.isArray(trainAnnouncements) || !trainAnnouncements.length) {
     return {}
   }

@@ -1,4 +1,4 @@
-import filterTrain from './filterTrain'
+import * as filter from './filter'
 /*
 1 'AdvertisedTrainIdent'
 1 'Deviation'
@@ -17,12 +17,12 @@ import filterTrain from './filterTrain'
 */
 
 describe('filterTrain', () => {
-  it('empty', () => expect(filterTrain()).toEqual({}))
-  it('empty array', () => expect(filterTrain([])).toEqual({}))
+  it('empty', () => expect(filter.train()).toEqual({}))
+  it('empty array', () => expect(filter.train([])).toEqual({}))
 
   it('one departure', () =>
     expect(
-      filterTrain([
+      filter.train([
         {
           ActivityType: 'Avgang',
           AdvertisedTimeAtLocation: '2018-06-27T06:40:00',
