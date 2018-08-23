@@ -4,11 +4,8 @@ export function activity(a) {
 }
 
 export function toLocation(a, stations) {
-  if (a.ToLocation) {
-    const s = `${a.ToLocation.map(l =>
-      stationName(l.LocationName, stations)
-    )}   `
-    return `${s}           `.substr(0, 11)
+  if (a.to) {
+    return `${stationName(a.to, stations)}           `.substr(0, 12)
   }
 }
 

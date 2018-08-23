@@ -15,29 +15,12 @@ describe('toLocation', () => {
     expect(toLocation({})).toBeUndefined()
   })
 
-  it('empty array', () => {
-    expect(toLocation({ ToLocation: [] })).toBe('           ')
-  })
-
   it('location without stations', () => {
-    expect(toLocation({ ToLocation: [{ LocationName: 'Tul' }] })).toBe(
-      'Tul        '
-    )
+    expect(toLocation({ to: 'Tul' })).toBe('Tul         ')
   })
 
   it('location with stations', () => {
-    expect(
-      toLocation({ ToLocation: [{ LocationName: 'Tul' }] }, { Tul: 'Tullinge' })
-    ).toBe('Tullinge   ')
-  })
-
-  it('handles multiple locations', () => {
-    expect(
-      toLocation(
-        { ToLocation: [{ LocationName: 'Äs' }, { LocationName: 'Söc' }] },
-        { Tul: 'Tullinge' }
-      )
-    ).toBe('Äs,Söc     ')
+    expect(toLocation({ to: 'Tul' }, { Tul: 'Tullinge' })).toBe('Tullinge    ')
   })
 })
 

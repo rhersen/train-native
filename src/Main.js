@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
 export default class Main extends Component {
   render() {
     const {
-      station = [],
+      station = {},
       stations,
       train = {},
       fetchStation,
@@ -20,13 +20,13 @@ export default class Main extends Component {
     return (
       <View style={this.props.style}>
         <Text style={styles.text}>
-          {station.length
-            ? stationName(station[0].LocationSignature, stations)
+          {station.location
+            ? stationName(station.location, stations)
             : train.id
               ? `Tåg ${train.id} mot ${this.toLocation(train, stations)}`
               : ''}
         </Text>
-        {Boolean(station.length) && (
+        {Boolean(station.location) && (
           <Station
             station={station}
             stations={stations}

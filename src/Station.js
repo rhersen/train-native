@@ -13,36 +13,36 @@ export default class Station extends Component {
 
   render() {
     const { opacity } = this.state
-    const { station = [], fetchTrain, style } = this.props
+    const { station = {}, fetchTrain, style } = this.props
     return (
       <Animated.View style={{ opacity }}>
-        {station.map(a => (
+        {station.trains.map(a => (
           <Text
-            key={a.AdvertisedTrainIdent ? a.AdvertisedTrainIdent : 0}
+            key={a.id ? a.id : 0}
             onPress={() => {
               Animated.timing(this.state.opacity, {
                 toValue: 0.3,
                 duration: 1000,
                 easing: Easing.out(Easing.cubic),
               }).start()
-              return fetchTrain(a.AdvertisedTrainIdent)
+              return fetchTrain(a.id)
             }}
             style={style}
           >
-            {this.getStationText(a)}
+            {this.getTrainText(a)}
           </Text>
         ))}
       </Animated.View>
     )
   }
 
-  getStationText(a) {
+  getTrainText(a) {
     const { stations } = this.props
 
-    return [train(), toLocation(a, stations), time(a)].join('')
+    return [trainId(), toLocation(a, stations), time(a)].join('')
 
-    function train() {
-      const s = a.AdvertisedTrainIdent
+    function trainId() {
+      const s = a.id
       if (s) {
         return `${s}     `.substr(0, 5)
       }

@@ -2,7 +2,32 @@ import map from 'lodash.map'
 import head from 'lodash.head'
 
 export function station(trainAnnouncements) {
-  return trainAnnouncements
+  if (!Array.isArray(trainAnnouncements) || !trainAnnouncements.length) {
+    return {}
+  }
+  const trainAnnouncement = head(trainAnnouncements)
+  const { LocationSignature } = trainAnnouncement
+
+  return {
+    location: LocationSignature,
+    trains: map(trainAnnouncements, trainAnnouncement => {
+      const {
+        ActivityType,
+        AdvertisedTimeAtLocation,
+        EstimatedTimeAtLocation,
+        AdvertisedTrainIdent,
+        TimeAtLocation,
+      } = trainAnnouncement
+      return {
+        to: map(trainAnnouncement.ToLocation, 'LocationName').join(),
+        id: AdvertisedTrainIdent,
+        activity: ActivityType,
+        advertised: AdvertisedTimeAtLocation,
+        estimated: EstimatedTimeAtLocation,
+        actual: TimeAtLocation,
+      }
+    }),
+  }
 }
 
 export function train(trainAnnouncements) {
