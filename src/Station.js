@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
-import { Animated, Easing, Text } from 'react-native'
+import { Animated, Easing, StyleSheet, Text } from 'react-native'
 import { time, toLocation } from './util'
+
+const styles = StyleSheet.create({
+  actual: { backgroundColor: 'lightgreen' },
+  estimated: { backgroundColor: 'yellow' },
+})
 
 export default class Station extends Component {
   state = {
@@ -13,7 +18,7 @@ export default class Station extends Component {
 
   render() {
     const { opacity } = this.state
-    const { station = {}, fetchTrain, style } = this.props
+    const { station = {}, fetchTrain } = this.props
     return (
       <Animated.View style={{ opacity }}>
         {station.trains.map(a => (
@@ -27,13 +32,20 @@ export default class Station extends Component {
               }).start()
               return fetchTrain(a.id)
             }}
-            style={style}
+            style={this.getStyle(a)}
           >
             {this.getTrainText(a)}
           </Text>
         ))}
       </Animated.View>
     )
+  }
+
+  getStyle(a) {
+    const { style } = this.props
+    if (a.actual) return [style, styles.actual]
+    if (a.estimated) return [style, styles.estimated]
+    return [style]
   }
 
   getTrainText(a) {
