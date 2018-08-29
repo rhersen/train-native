@@ -1,6 +1,13 @@
 import React, { Component } from 'react'
-import { Animated, Easing, Text } from 'react-native'
+import { Animated, Easing, StyleSheet, Text } from 'react-native'
+import difference_in_minutes from 'date-fns/difference_in_minutes'
 import { activity, stationName, time } from './util'
+
+const styles = StyleSheet.create({
+  ahead: { backgroundColor: 'cyan' },
+  ontime: { backgroundColor: 'lightgreen' },
+  delayed: { backgroundColor: 'pink' },
+})
 
 export default class Train extends Component {
   state = {
@@ -13,7 +20,7 @@ export default class Train extends Component {
 
   render() {
     const { opacity } = this.state
-    const { train = {}, fetchStation, style } = this.props
+    const { train = {}, fetchStation } = this.props
     return (
       <Animated.View style={{ opacity }}>
         {train.locations.map(a => (
@@ -27,13 +34,26 @@ export default class Train extends Component {
               }).start()
               fetchStation(a.location)
             }}
-            style={style}
+            style={this.getStyle(a)}
           >
             {this.getTrainText(a)}
           </Text>
         ))}
       </Animated.View>
     )
+  }
+
+  getStyle(a) {
+    const { style } = this.props
+
+    if (!a.actual) {
+      return [style]
+    }
+
+    const diff = difference_in_minutes(a.actual, a.advertised)
+    if (diff < 0) return [style, styles.ahead]
+    if (diff > 0) return [style, styles.delayed]
+    return [style, styles.ontime]
   }
 
   getTrainText(a) {

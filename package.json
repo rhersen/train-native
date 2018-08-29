@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://secure.hersen.name/tv",
   "dependencies": {
+    "date-fns": "^1.29.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "eslint-plugin-prettier": "^2.6.0",
     "lodash.get": "^4.4.2",
