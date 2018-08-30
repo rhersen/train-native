@@ -4,9 +4,12 @@ import difference_in_minutes from 'date-fns/difference_in_minutes'
 import { activity, stationName, time } from './util'
 
 const styles = StyleSheet.create({
-  ahead: { backgroundColor: 'cyan' },
-  ontime: { backgroundColor: 'lightgreen' },
-  delayed: { backgroundColor: 'pink' },
+  ahead: { backgroundColor: 'lightsteelblue' },
+  ontime: { backgroundColor: 'palegreen' },
+  delay1: { backgroundColor: 'lightyellow' },
+  delay2: { backgroundColor: 'yellow' },
+  delay4: { backgroundColor: 'orange' },
+  delay8: { backgroundColor: 'red' },
 })
 
 export default class Train extends Component {
@@ -52,8 +55,11 @@ export default class Train extends Component {
 
     const diff = difference_in_minutes(a.actual, a.advertised)
     if (diff < 0) return [style, styles.ahead]
-    if (diff > 0) return [style, styles.delayed]
-    return [style, styles.ontime]
+    if (diff < 1) return [style, styles.ontime]
+    if (diff < 2) return [style, styles.delay1]
+    if (diff < 4) return [style, styles.delay2]
+    if (diff < 8) return [style, styles.delay4]
+    return [style, styles.delay8]
   }
 
   getTrainText(a) {
