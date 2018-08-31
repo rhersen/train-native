@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Animated, Easing, StyleSheet, Text } from 'react-native'
+import { Animated, Easing, FlatList, StyleSheet, Text } from 'react-native'
 import { time, toLocation } from './util'
 
 const styles = StyleSheet.create({
@@ -21,22 +21,25 @@ export default class Station extends Component {
     const { station = {}, fetchTrain } = this.props
     return (
       <Animated.View style={{ opacity }}>
-        {station.trains.map(a => (
-          <Text
-            key={a.id ? a.id : 0}
-            onPress={() => {
-              Animated.timing(this.state.opacity, {
-                toValue: 0.3,
-                duration: 1000,
-                easing: Easing.out(Easing.cubic),
-              }).start()
-              return fetchTrain(a.id)
-            }}
-            style={this.getStyle(a)}
-          >
-            {this.getTrainText(a)}
-          </Text>
-        ))}
+        <FlatList
+          data={station.trains}
+          renderItem={({ item }) => (
+            <Text
+              key={item.id ? item.id : 0}
+              onPress={() => {
+                Animated.timing(this.state.opacity, {
+                  toValue: 0.3,
+                  duration: 1000,
+                  easing: Easing.out(Easing.cubic),
+                }).start()
+                return fetchTrain(item.id)
+              }}
+              style={this.getStyle(item)}
+            >
+              {this.getTrainText(item)}
+            </Text>
+          )}
+        />
       </Animated.View>
     )
   }

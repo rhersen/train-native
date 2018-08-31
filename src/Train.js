@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Animated, Easing, StyleSheet, Text } from 'react-native'
+import { Animated, Easing, FlatList, StyleSheet, Text } from 'react-native'
 import difference_in_minutes from 'date-fns/difference_in_minutes'
 import { activity, stationName, time } from './util'
 
@@ -26,22 +26,25 @@ export default class Train extends Component {
     const { train = {}, fetchStation } = this.props
     return (
       <Animated.View style={{ opacity }}>
-        {train.locations.map(a => (
-          <Text
-            key={a.location + a.activity}
-            onPress={() => {
-              Animated.timing(this.state.opacity, {
-                toValue: 0.3,
-                duration: 1000,
-                easing: Easing.out(Easing.cubic),
-              }).start()
-              fetchStation(a.location)
-            }}
-            style={this.getStyle(a)}
-          >
-            {this.getTrainText(a)}
-          </Text>
-        ))}
+        <FlatList
+          data={train.locations}
+          renderItem={({ item }) => (
+            <Text
+              key={item.location + item.activity}
+              onPress={() => {
+                Animated.timing(this.state.opacity, {
+                  toValue: 0.3,
+                  duration: 1000,
+                  easing: Easing.out(Easing.cubic),
+                }).start()
+                fetchStation(item.location)
+              }}
+              style={this.getStyle(item)}
+            >
+              {this.getTrainText(item)}
+            </Text>
+          )}
+        />
       </Animated.View>
     )
   }
