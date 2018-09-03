@@ -21,6 +21,7 @@ export function station(trainAnnouncements) {
       return {
         to: map(trainAnnouncement.ToLocation, 'LocationName').join(),
         id: AdvertisedTrainIdent,
+        key: AdvertisedTrainIdent,
         activity: ActivityType,
         advertised: AdvertisedTimeAtLocation,
         estimated: EstimatedTimeAtLocation,
@@ -51,6 +52,7 @@ export function train(trainAnnouncements) {
       return {
         location: LocationSignature,
         activity: ActivityType,
+        key: LocationSignature + ActivityType,
         advertised: AdvertisedTimeAtLocation,
         estimated: EstimatedTimeAtLocation,
         actual: TimeAtLocation,

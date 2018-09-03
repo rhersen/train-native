@@ -30,7 +30,6 @@ export default class Train extends Component {
           data={train.locations}
           renderItem={({ item }) => (
             <Text
-              key={item.location + item.activity}
               onPress={() => {
                 Animated.timing(this.state.opacity, {
                   toValue: 0.3,

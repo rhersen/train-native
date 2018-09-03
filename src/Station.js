@@ -25,7 +25,6 @@ export default class Station extends Component {
           data={station.trains}
           renderItem={({ item }) => (
             <Text
-              key={item.id ? item.id : 0}
               onPress={() => {
                 Animated.timing(this.state.opacity, {
                   toValue: 0.3,

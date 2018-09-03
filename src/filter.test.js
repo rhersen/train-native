@@ -41,6 +41,7 @@ describe('train', () => {
         {
           location: 'Nyh',
           activity: 'Avgang',
+          key: 'NyhAvgang',
           advertised: '2018-06-27T06:40:00',
           estimated: '2018-06-27T06:40:00',
           actual: '2018-06-27T06:40:00',
@@ -75,6 +76,7 @@ describe('station', () => {
       trains: [
         {
           id: '2814',
+          key: '2814',
           to: 'Bål',
           activity: 'Avgang',
           advertised: '2018-06-27T06:40:00',
