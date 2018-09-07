@@ -16,11 +16,17 @@ describe('toLocation', () => {
   })
 
   it('location without stations', () => {
-    expect(toLocation({ to: 'Tul' })).toBe('Tul         ')
+    expect(toLocation({ to: 'Tul' })).toBe('Tul')
   })
 
   it('location with stations', () => {
-    expect(toLocation({ to: 'Tul' }, { Tul: 'Tullinge' })).toBe('Tullinge    ')
+    expect(toLocation({ to: 'Tul' }, { Tul: 'Tullinge' })).toBe('Tullinge')
+  })
+
+  it('abbreviates names longer than "Södertälje C"', () => {
+    const stations = { Upv: 'Upplands Väsby', Vhe: 'Västerhaninge' }
+    expect(toLocation({ to: 'Upv' }, stations)).toBe('Väsby')
+    expect(toLocation({ to: 'Vhe' }, stations)).toBe('V-haninge')
   })
 })
 

@@ -5,12 +5,16 @@ export function activity(a) {
 
 export function toLocation(a, stations) {
   if (a.to) {
-    return `${stationName(a.to, stations)}           `.substr(0, 12)
+    return stationName(a.to, stations)
   }
 }
 
 export function stationName(locationSignature, stations = []) {
-  return stations[locationSignature] || locationSignature
+  const fullName = stations[locationSignature]
+  if (!fullName) return locationSignature
+  if (fullName.startsWith('Upplands ')) return fullName.substring(9)
+  if (fullName.startsWith('Väster')) return `V-${fullName.substring(6)}`
+  return fullName
 }
 
 export function time(a) {

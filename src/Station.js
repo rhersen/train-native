@@ -1,5 +1,12 @@
 import React, { Component } from 'react'
-import { Animated, Easing, FlatList, StyleSheet, Text } from 'react-native'
+import {
+  Animated,
+  Easing,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
 import { time, toLocation } from './util'
 
 const styles = StyleSheet.create({
@@ -24,19 +31,32 @@ export default class Station extends Component {
         <FlatList
           data={station.trains}
           renderItem={({ item }) => (
-            <Text
-              onPress={() => {
-                Animated.timing(this.state.opacity, {
-                  toValue: 0.3,
-                  duration: 1000,
-                  easing: Easing.out(Easing.cubic),
-                }).start()
-                return fetchTrain(item.id)
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
               }}
-              style={this.getStyle(item)}
             >
-              {this.getTrainText(item)}
-            </Text>
+              <Text
+                onPress={() => {
+                  Animated.timing(this.state.opacity, {
+                    toValue: 0.3,
+                    duration: 1000,
+                    easing: Easing.out(Easing.cubic),
+                  }).start()
+                  return fetchTrain(item.id)
+                }}
+                style={{
+                  fontSize: 22,
+                  flexGrow: 2,
+                }}
+              >
+                {this.getTrainDestination(item)}
+              </Text>
+              <Text style={{ fontSize: 22, flexGrow: 0, width: '34%' }}>
+                {time(item)}
+              </Text>
+            </View>
           )}
         />
       </Animated.View>
@@ -50,10 +70,10 @@ export default class Station extends Component {
     return [style]
   }
 
-  getTrainText(a) {
+  getTrainDestination(a) {
     const { stations } = this.props
 
-    return [trainId(), toLocation(a, stations), time(a)].join('')
+    return [trainId(), toLocation(a, stations)].join('')
 
     function trainId() {
       const s = a.id
