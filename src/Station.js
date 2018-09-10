@@ -35,8 +35,12 @@ export default class Station extends Component {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
+                alignItems: 'center',
               }}
             >
+              <Text style={{ fontSize: 16, flexGrow: 0, width: '16%' }}>
+                {item.id}
+              </Text>
               <Text
                 onPress={() => {
                   Animated.timing(this.state.opacity, {
@@ -46,14 +50,11 @@ export default class Station extends Component {
                   }).start()
                   return fetchTrain(item.id)
                 }}
-                style={{
-                  fontSize: 22,
-                  flexGrow: 2,
-                }}
+                style={{ fontSize: 28, flexGrow: 1 }}
               >
                 {this.getTrainDestination(item)}
               </Text>
-              <Text style={{ fontSize: 22, flexGrow: 0, width: '34%' }}>
+              <Text style={{ fontSize: 16, flexGrow: 0, width: '30%' }}>
                 {time(item)}
               </Text>
             </View>
@@ -73,13 +74,6 @@ export default class Station extends Component {
   getTrainDestination(a) {
     const { stations } = this.props
 
-    return [trainId(), toLocation(a, stations)].join('')
-
-    function trainId() {
-      const s = a.id
-      if (s) {
-        return `${s}     `.substr(0, 5)
-      }
-    }
+    return toLocation(a, stations)
   }
 }
