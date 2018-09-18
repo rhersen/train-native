@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from 'react-native'
-import { time, toLocation } from './util'
+import { countdown, minute, toLocation } from './util'
 
 const styles = StyleSheet.create({
   actual: { backgroundColor: 'lightgreen' },
@@ -36,11 +36,9 @@ export default class Station extends Component {
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
                 alignItems: 'center',
+                ...backgroundColor(item),
               }}
             >
-              <Text style={{ fontSize: 16, flexGrow: 0, width: '16%' }}>
-                {item.id}
-              </Text>
               <Text
                 onPress={() => {
                   Animated.timing(this.state.opacity, {
@@ -54,8 +52,25 @@ export default class Station extends Component {
               >
                 {this.getTrainDestination(item)}
               </Text>
-              <Text style={{ fontSize: 16, flexGrow: 0, width: '30%' }}>
+              <Text
+                style={{
+                  fontSize: 22,
+                  flexGrow: 0,
+                  width: '18%',
+                  ...timeStyle(item),
+                }}
+              >
                 {time(item)}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 22,
+                  flexGrow: 0,
+                  width: '22%',
+                  ...timeStyle(item),
+                }}
+              >
+                {countdown(item, new Date())}
               </Text>
             </View>
           )}
@@ -75,5 +90,35 @@ export default class Station extends Component {
     const { stations } = this.props
 
     return toLocation(a, stations)
+  }
+}
+
+function backgroundColor(a) {
+  if (/[02468]$/.test(a.id)) {
+    return { backgroundColor: '#fdd' }
+  }
+  return { backgroundColor: 'lightblue' }
+}
+
+function timeStyle(a) {
+  if (a.actual) return { fontWeight: 'bold' }
+  if (a.estimated) return { fontStyle: 'italic' }
+  return {}
+}
+
+function time(a) {
+  if (a.AdvertisedTimeAtLocation) {
+    return (
+      a.AdvertisedTimeAtLocation.substr(11, 2) +
+      minute(a.AdvertisedTimeAtLocation) +
+      minute(a.EstimatedTimeAtLocation) +
+      minute(a.TimeAtLocation)
+    )
+  }
+
+  if (a.advertised) {
+    if (a.actual) return a.actual.substr(11, 5)
+    if (a.estimated) return a.estimated.substr(11, 5)
+    return a.advertised.substr(11, 5)
   }
 }

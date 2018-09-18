@@ -1,3 +1,6 @@
+import difference_in_minutes from 'date-fns/difference_in_minutes'
+import difference_in_seconds from 'date-fns/difference_in_seconds'
+
 export function activity(a) {
   const s = a.ActivityType || a.activity || '   '
   return `${s}   `.substr(0, 3)
@@ -37,6 +40,21 @@ export function time(a) {
   }
 }
 
-function minute(t) {
+export function minute(t) {
   return t ? t.substr(13, 3) : '   '
+}
+
+export function countdown({ advertised, estimated } = {}, now) {
+  const t = estimated || advertised
+  if (t) {
+    const m = difference_in_minutes(t, now)
+    const s = difference_in_seconds(t, now)
+    if (s <= -100) return ''
+    if (s < 100) return `${s}s`
+    if (m < 10) {
+      const seconds = s - m * 60
+      return `${m}:${seconds < 10 ? '0' : ''}${seconds}`
+    }
+    return `${m}min`
+  }
 }
