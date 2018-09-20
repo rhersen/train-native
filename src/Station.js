@@ -17,19 +17,30 @@ const styles = StyleSheet.create({
 export default class Station extends Component {
   state = {
     opacity: new Animated.Value(0),
+    now: new Date(),
+  }
+
+  tick() {
+    this.setState(() => ({ now: new Date() }))
   }
 
   componentDidMount() {
     Animated.timing(this.state.opacity, { toValue: 1, duration: 500 }).start()
+    this.interval = setInterval(() => this.tick(), 1000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval)
   }
 
   render() {
-    const { opacity } = this.state
+    const { opacity, now } = this.state
     const { station = {}, fetchTrain } = this.props
     return (
       <Animated.View style={{ opacity }}>
         <FlatList
           data={station.trains}
+          extraData={now}
           renderItem={({ item }) => (
             <View
               style={{
@@ -56,6 +67,7 @@ export default class Station extends Component {
                 style={{
                   fontSize: 22,
                   flexGrow: 0,
+                  textAlign: 'center',
                   width: '18%',
                   ...timeStyle(item),
                 }}
@@ -66,11 +78,12 @@ export default class Station extends Component {
                 style={{
                   fontSize: 22,
                   flexGrow: 0,
+                  textAlign: 'right',
                   width: '22%',
                   ...timeStyle(item),
                 }}
               >
-                {countdown(item, new Date())}
+                {countdown(item, now)}
               </Text>
             </View>
           )}
