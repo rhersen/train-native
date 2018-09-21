@@ -68,7 +68,7 @@ export default class Station extends Component {
                   fontSize: 22,
                   flexGrow: 0,
                   textAlign: 'center',
-                  width: '18%',
+                  width: '21%',
                   ...timeStyle(item),
                 }}
               >
@@ -114,7 +114,7 @@ function backgroundColor(a) {
 }
 
 function timeStyle(a) {
-  if (a.actual) return { fontWeight: 'bold' }
+  if (a.actual) return { fontWeight: 'bold', fontSize: 21 }
   if (a.estimated) return { fontStyle: 'italic' }
   return {}
 }

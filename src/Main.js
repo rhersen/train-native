@@ -6,6 +6,7 @@ import Train from './Train'
 
 const styles = StyleSheet.create({
   text: { fontWeight: 'bold', fontSize: 20, fontFamily: 'monospace' },
+  heading: { fontWeight: 'bold', fontSize: 44, textAlign: 'center' },
 })
 
 export default class Main extends Component {
@@ -19,7 +20,7 @@ export default class Main extends Component {
     } = this.props
     return (
       <View style={this.props.style}>
-        <Text style={styles.text}>
+        <Text style={styles.heading}>
           {station.location
             ? stationName(station.location, stations)
             : train.id
