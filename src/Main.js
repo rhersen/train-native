@@ -5,7 +5,7 @@ import { stationName } from './util'
 import Train from './Train'
 
 const styles = StyleSheet.create({
-  text: { fontWeight: 'bold', fontSize: 20, fontFamily: 'monospace' },
+  text: { fontSize: 28 },
   heading: { fontWeight: 'bold', fontSize: 44, textAlign: 'center' },
 })
 

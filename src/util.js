@@ -21,15 +21,6 @@ export function stationName(locationSignature, stations = []) {
 }
 
 export function time(a) {
-  if (a.AdvertisedTimeAtLocation) {
-    return (
-      a.AdvertisedTimeAtLocation.substr(11, 2) +
-      minute(a.AdvertisedTimeAtLocation) +
-      minute(a.EstimatedTimeAtLocation) +
-      minute(a.TimeAtLocation)
-    )
-  }
-
   if (a.advertised) {
     return (
       a.advertised.substr(11, 2) +

@@ -1,5 +1,8 @@
-import map from 'lodash.map'
+import groupby from 'lodash.groupby'
+import keyby from 'lodash.keyby'
 import head from 'lodash.head'
+import map from 'lodash.map'
+import mapvalues from 'lodash.mapvalues'
 
 export function station(trainAnnouncements) {
   if (!Array.isArray(trainAnnouncements) || !trainAnnouncements.length) {
@@ -35,28 +38,36 @@ export function train(trainAnnouncements) {
   if (!Array.isArray(trainAnnouncements) || !trainAnnouncements.length) {
     return {}
   }
-  const trainAnnouncement = head(trainAnnouncements)
-  const { AdvertisedTrainIdent } = trainAnnouncement
+
+  const [{ AdvertisedTrainIdent, ToLocation }] = trainAnnouncements
 
   return {
     id: AdvertisedTrainIdent,
-    to: map(trainAnnouncement.ToLocation, 'LocationName').join(),
-    locations: map(trainAnnouncements, trainAnnouncement => {
-      const {
-        ActivityType,
-        AdvertisedTimeAtLocation,
-        EstimatedTimeAtLocation,
-        LocationSignature,
-        TimeAtLocation,
-      } = trainAnnouncement
-      return {
-        location: LocationSignature,
-        activity: ActivityType,
-        key: LocationSignature + ActivityType,
-        advertised: AdvertisedTimeAtLocation,
-        estimated: EstimatedTimeAtLocation,
-        actual: TimeAtLocation,
-      }
-    }),
+    to: map(ToLocation, 'LocationName').join(),
+    locations: map(
+      groupby(trainAnnouncements, 'LocationSignature'),
+      locationObject
+    ),
+  }
+}
+
+function locationObject(group, key) {
+  return {
+    key,
+    location: key,
+    ...mapvalues(keyby(group, 'ActivityType'), times),
+  }
+}
+
+function times(trainAnnouncement) {
+  const {
+    AdvertisedTimeAtLocation,
+    EstimatedTimeAtLocation,
+    TimeAtLocation,
+  } = trainAnnouncement
+  return {
+    advertised: AdvertisedTimeAtLocation,
+    estimated: EstimatedTimeAtLocation,
+    actual: TimeAtLocation,
   }
 }
