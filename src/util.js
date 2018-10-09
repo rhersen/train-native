@@ -21,13 +21,12 @@ export function stationName(locationSignature, stations = []) {
 }
 
 export function time(a) {
-  if (a.advertised) {
-    return (
-      a.advertised.substr(11, 2) +
-      minute(a.advertised) +
-      minute(a.estimated) +
-      minute(a.actual)
-    )
+  if (a.actual) {
+    return a.actual.substr(14, 2)
+  }
+
+  if (a.estimated) {
+    return a.estimated.substr(14, 2)
   }
 }
 

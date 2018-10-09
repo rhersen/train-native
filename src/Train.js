@@ -44,9 +44,20 @@ export default class Train extends Component {
               <Text
                 style={{
                   fontSize: 22,
-                  flexGrow: 0,
-                  textAlign: 'center',
-                  width: '38%',
+                  textAlign: 'right',
+                  width: '21%',
+                }}
+              >
+                {item.Avgang &&
+                  item.Avgang.advertised &&
+                  item.Avgang.advertised.substr(11, 5)}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 22,
+                  textAlign: 'right',
+                  width: '12%',
+                  ...getFontStyle(item),
                 }}
               >
                 {time(item.Avgang || {})}
@@ -56,10 +67,6 @@ export default class Train extends Component {
         />
       </Animated.View>
     )
-  }
-
-  getTrainText(a) {
-    return [this.location(a), time(a.Avgang || {})].join(' ')
   }
 
   location(a) {
@@ -89,4 +96,17 @@ function getStyle(a) {
   if (diff < 4) return styles.delay2
   if (diff < 8) return styles.delay4
   return styles.delay8
+}
+
+function getFontStyle(a) {
+  const avgang = a.Avgang || {}
+  if (avgang.actual) {
+    return { fontWeight: 'bold' }
+  }
+
+  if (avgang.estimated) {
+    return { fontStyle: 'italic' }
+  }
+
+  return {}
 }

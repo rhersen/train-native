@@ -27,25 +27,27 @@ describe('time', () => {
   it('empty', () => expect(time({})).toBeUndefined())
 
   it('advertised', () =>
-    expect(time({ AdvertisedTimeAtLocation: '2018-05-04T17:30:00' })).toBe(
-      '17:30      '
-    ))
+    expect(
+      time({
+        advertised: '2018-05-04T17:30:00',
+      })
+    ).toBeUndefined())
 
   it('estimated', () =>
     expect(
       time({
-        AdvertisedTimeAtLocation: '2018-05-04T17:30:00',
-        EstimatedTimeAtLocation: '2018-05-04T17:31:00',
+        advertised: '2018-05-04T17:30:00',
+        estimated: '2018-05-04T17:31:00',
       })
-    ).toBe('17:30:31   '))
+    ).toBe('31'))
 
   it('actual', () =>
     expect(
       time({
-        AdvertisedTimeAtLocation: '2018-05-04T17:30:00',
-        TimeAtLocation: '2018-05-04T17:30:00',
+        advertised: '2018-05-04T17:30:00',
+        actual: '2018-05-04T17:30:00',
       })
-    ).toBe('17:30   :30'))
+    ).toBe('30'))
 })
 
 describe('countdown', () => {

@@ -53,11 +53,13 @@ test('one train announcement', () => {
         to: 'Sub',
         locations: [
           {
-            activity: 'Avgang',
-            advertised: '2018-05-04T17:30:00',
-            estimated: '2018-05-04T17:31:00',
+            Avgang: {
+              advertised: '2018-05-04T17:30:00',
+              estimated: '2018-05-04T17:31:00',
+              actual: '2018-05-04T17:32:00',
+            },
             location: 'Tul',
-            actual: '2018-05-04T17:32:00',
+            key: 'Tul',
           },
         ],
       }}
@@ -67,7 +69,7 @@ test('one train announcement', () => {
     .childAt(0)
   expect(wrapper.children().map(child => child.text())).toEqual([
     'Tåg 1234 mot Sundbyberg',
-    'Avg Tullinge     17:30:31:32',
+    'Tullinge17:3032',
   ])
 })
 
@@ -81,11 +83,13 @@ test('announcement without ActivityType', () => {
         to: 'Sub',
         locations: [
           {
-            activity: undefined,
-            advertised: '2018-05-04T17:30:00',
-            estimated: '2018-05-04T17:31:00',
+            Avgang: {
+              advertised: '2018-05-04T17:30:00',
+              estimated: '2018-05-04T17:31:00',
+              actual: '2018-05-04T17:32:00',
+            },
             location: 'Tul',
-            actual: '2018-05-04T17:32:00',
+            key: 'Tul',
           },
         ],
       }}
@@ -95,7 +99,7 @@ test('announcement without ActivityType', () => {
     .childAt(0)
   expect(wrapper.children().map(child => child.text())).toEqual([
     'Tåg 1234 mot Sundbyberg',
-    '    Tullinge     17:30:31:32',
+    'Tullinge17:3032',
   ])
 })
 
