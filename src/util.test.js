@@ -17,9 +17,13 @@ describe('toLocation', () => {
     expect(toLocation({ to: 'Tul' }, { Tul: 'Tullinge' })).toBe('Tullinge'))
 
   it('abbreviates names longer than "Södertälje C"', () => {
-    const stations = { Upv: 'Upplands Väsby', Vhe: 'Västerhaninge' }
+    const stations = getStations()
     expect(toLocation({ to: 'Upv' }, stations)).toBe('Väsby')
     expect(toLocation({ to: 'Vhe' }, stations)).toBe('V-haninge')
+    expect(toLocation({ to: 'Sod' }, stations)).toBe('Odenplan')
+    expect(toLocation({ to: 'Sci' }, stations)).toBe('City')
+    expect(toLocation({ to: 'Sst' }, stations)).toBe('Södra')
+    expect(toLocation({ to: 'Söd' }, stations)).toBe('Södertälje H')
   })
 })
 
@@ -91,3 +95,61 @@ describe('countdown', () => {
       countdown({ advertised: '2018-05-04T17:37:00' }, '2018-05-04T17:33:51')
     ).toBe('3:09'))
 })
+
+function getStations() {
+  return {
+    Arnc: 'Arlanda',
+    Bkb: 'Barkarby',
+    Bro: 'Bro',
+    Fas: 'Farsta strand',
+    Flb: 'Flemingsberg',
+    Gdv: 'Gröndalsviken',
+    Hgv: 'Häggvik',
+    Hfa: 'Hemfosa',
+    Hel: 'Helenelund',
+    Hu: 'Huddinge',
+    Hnd: 'Handen',
+    Jkb: 'Jakobsberg',
+    Jn: 'Järna',
+    Jbo: 'Jordbro',
+    Kda: 'Krigslida',
+    Kän: 'Kungsängen',
+    Khä: 'Kallhäll',
+    Mr: 'Märsta',
+    Ngd: 'Nynäsgård',
+    Nvk: 'Norrviken',
+    Mö: 'Mölnbo',
+    Nyh: 'Nynäshamn',
+    Rs: 'Rosersberg',
+    Sci: 'Stockholm City',
+    Rön: 'Rönninge',
+    Sub: 'Sundbyberg',
+    Spå: 'Spånga',
+    Skg: 'Skogås',
+    Ts: 'Tungelsta',
+    Söu: 'Södertälje Syd',
+    Tåd: 'Trångsund',
+    Sst: 'Stockholms södra',
+    Tu: 'Tumba',
+    Tul: 'Tullinge',
+    Ssä: 'Segersäng',
+    Sta: 'Stuvsta',
+    Udl: 'Ulriksdal',
+    Vhe: 'Västerhaninge',
+    Upv: 'Upplands Väsby',
+    Åbe: 'Årstaberg',
+    Äs: 'Älvsjö',
+    Öso: 'Ösmo',
+    Öte: 'Östertälje',
+    So: 'Solna',
+    Sod: 'Sthlm Odenplan',
+    Sol: 'Sollentuna',
+    R: 'Rotebro',
+    Söc: 'Södertälje C',
+    Söd: 'Södertälje hamn',
+    Bål: 'Bålsta',
+    Kn: 'Knivsta',
+    U: 'Uppsala',
+    Gn: 'Gnesta',
+  }
+}

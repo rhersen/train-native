@@ -15,6 +15,11 @@ export function toLocation(a, stations) {
 export function stationName(locationSignature, stations = []) {
   const fullName = stations[locationSignature]
   if (!fullName) return locationSignature
+  if (fullName.startsWith('Sthlm ')) return fullName.substring(6)
+  if (fullName.startsWith('Stockholms s')) return `S${fullName.substring(12)}`
+  if (fullName.startsWith('Stockholm ')) return fullName.substring(10)
+  if (fullName.startsWith('Södertälje h')) return 'Södertälje H'
+  if (fullName.startsWith('Södertälje ')) return fullName.substring(0, 12)
   if (fullName.startsWith('Upplands ')) return fullName.substring(9)
   if (fullName.startsWith('Väster')) return `V-${fullName.substring(6)}`
   return fullName
