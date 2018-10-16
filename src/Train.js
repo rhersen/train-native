@@ -43,6 +43,8 @@ export default class Train extends Component {
               </Text>
               <Text
                 style={{
+                  fontFamily:
+                    '"Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif',
                   fontSize: 22,
                   textAlign: 'right',
                   width: '21%',
@@ -54,6 +56,8 @@ export default class Train extends Component {
               </Text>
               <Text
                 style={{
+                  fontFamily:
+                    '"Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif',
                   fontSize: 22,
                   textAlign: 'right',
                   width: '12%',

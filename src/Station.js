@@ -65,6 +65,8 @@ export default class Station extends Component {
               </Text>
               <Text
                 style={{
+                  fontFamily:
+                    '"Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif',
                   fontSize: 22,
                   flexGrow: 0,
                   textAlign: 'center',
@@ -76,6 +78,8 @@ export default class Station extends Component {
               </Text>
               <Text
                 style={{
+                  fontFamily:
+                    '"Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif',
                   fontSize: 22,
                   flexGrow: 0,
                   textAlign: 'right',
