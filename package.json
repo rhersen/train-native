@@ -1,8 +1,8 @@
 {
-  "name": "tv",
+  "name": "train-native",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://secure.hersen.name/tv",
+  "homepage": "https://secure.hersen.name/train",
   "dependencies": {
     "date-fns": "^1.29.0",
     "enzyme-adapter-react-16": "^1.1.1",
@@ -18,8 +18,8 @@
     "react": "^16.3.2",
     "react-art": "^16.3.2",
     "react-dom": "^16.3.2",
-    "react-native-web": "^0.8.0",
-    "react-scripts": "1.1.4",
+    "react-native-web": "^0.9.3",
+    "react-scripts": "1.1.5",
     "react-test-renderer": "^16.3.2"
   },
   "proxy": "http://localhost:1337/",

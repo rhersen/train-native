@@ -1,7 +1,40 @@
 import React, { Component } from 'react'
-import { Animated, Easing, FlatList, Text, View } from 'react-native'
+import {
+  Animated,
+  Easing,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
 import difference_in_minutes from 'date-fns/difference_in_minutes'
 import { stationName, time } from './util'
+
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  northbound: { backgroundColor: '#fdd' },
+  southbound: { backgroundColor: 'lightblue' },
+  time: {
+    fontFamily: '"Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif',
+    fontSize: 22,
+    flexGrow: 0,
+    textAlign: 'right',
+    width: '22%',
+  },
+  actual: { fontWeight: 'bold', fontSize: 21 },
+  estimated: { fontStyle: 'italic' },
+  destination: { fontSize: 28, flexGrow: 1 },
+  ahead: { backgroundColor: 'lightsteelblue' },
+  ontime: { backgroundColor: 'palegreen' },
+  delay1: { backgroundColor: 'lightyellow' },
+  delay2: { backgroundColor: 'yellow' },
+  delay4: { backgroundColor: 'orange' },
+  delay8: { backgroundColor: 'red' },
+})
 
 export default class Train extends Component {
   state = {
@@ -20,14 +53,7 @@ export default class Train extends Component {
         <FlatList
           data={train.locations}
           renderItem={({ item }) => (
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-                alignItems: 'center',
-                ...getStyle(item),
-              }}
-            >
+            <View style={[styles.row, getStyle(item)]}>
               <Text
                 onPress={() => {
                   Animated.timing(this.state.opacity, {
@@ -37,32 +63,21 @@ export default class Train extends Component {
                   }).start()
                   fetchStation(item.location)
                 }}
-                style={{ fontSize: 28, flexGrow: 1 }}
+                style={styles.destination}
               >
                 {this.location(item)}
               </Text>
-              <Text
-                style={{
-                  fontFamily:
-                    '"Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif',
-                  fontSize: 22,
-                  textAlign: 'right',
-                  width: '21%',
-                }}
-              >
+              <Text style={styles.time}>
                 {item.Avgang &&
                   item.Avgang.advertised &&
                   item.Avgang.advertised.substr(11, 5)}
               </Text>
               <Text
-                style={{
-                  fontFamily:
-                    '"Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif',
-                  fontSize: 22,
-                  textAlign: 'right',
-                  width: '12%',
-                  ...getFontStyle(item),
-                }}
+                style={[
+                  styles.time,
+                  item.Avgang && item.Avgang.actual && styles.actual,
+                  item.Avgang && item.Avgang.estimated && styles.estimated,
+                ]}
               >
                 {time(item.Avgang || {})}
               </Text>
@@ -81,16 +96,7 @@ export default class Train extends Component {
 function getStyle(a) {
   const avgang = a.Avgang || {}
   if (!avgang.actual) {
-    return { backgroundColor: 'lightblue' }
-  }
-
-  const styles = {
-    ahead: { backgroundColor: 'lightsteelblue' },
-    ontime: { backgroundColor: 'palegreen' },
-    delay1: { backgroundColor: 'lightyellow' },
-    delay2: { backgroundColor: 'yellow' },
-    delay4: { backgroundColor: 'orange' },
-    delay8: { backgroundColor: 'red' },
+    return styles.southbound
   }
 
   const diff = difference_in_minutes(avgang.actual, avgang.advertised)
@@ -100,17 +106,4 @@ function getStyle(a) {
   if (diff < 4) return styles.delay2
   if (diff < 8) return styles.delay4
   return styles.delay8
-}
-
-function getFontStyle(a) {
-  const avgang = a.Avgang || {}
-  if (avgang.actual) {
-    return { fontWeight: 'bold' }
-  }
-
-  if (avgang.estimated) {
-    return { fontStyle: 'italic' }
-  }
-
-  return {}
 }

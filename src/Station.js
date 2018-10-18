@@ -10,8 +10,23 @@ import {
 import { countdown, minute, toLocation } from './util'
 
 const styles = StyleSheet.create({
-  actual: { backgroundColor: 'lightgreen' },
-  estimated: { backgroundColor: 'yellow' },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  northbound: { backgroundColor: '#fdd' },
+  southbound: { backgroundColor: 'lightblue' },
+  time: {
+    fontFamily: '"Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif',
+    fontSize: 22,
+    flexGrow: 0,
+    textAlign: 'right',
+    width: '22%',
+  },
+  actual: { fontWeight: 'bold', fontSize: 21 },
+  estimated: { fontStyle: 'italic' },
+  destination: { fontSize: 28, flexGrow: 1 },
 })
 
 export default class Station extends Component {
@@ -43,12 +58,12 @@ export default class Station extends Component {
           extraData={now}
           renderItem={({ item }) => (
             <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-                alignItems: 'center',
-                ...backgroundColor(item),
-              }}
+              style={[
+                styles.row,
+                /[02468]$/.test(item.id)
+                  ? styles.northbound
+                  : styles.southbound,
+              ]}
             >
               <Text
                 onPress={() => {
@@ -59,33 +74,25 @@ export default class Station extends Component {
                   }).start()
                   return fetchTrain(item.id)
                 }}
-                style={{ fontSize: 28, flexGrow: 1 }}
+                style={styles.destination}
               >
                 {this.getTrainDestination(item)}
               </Text>
               <Text
-                style={{
-                  fontFamily:
-                    '"Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif',
-                  fontSize: 22,
-                  flexGrow: 0,
-                  textAlign: 'center',
-                  width: '21%',
-                  ...timeStyle(item),
-                }}
+                style={[
+                  styles.time,
+                  item.actual && styles.actual,
+                  item.estimated && styles.estimated,
+                ]}
               >
                 {time(item)}
               </Text>
               <Text
-                style={{
-                  fontFamily:
-                    '"Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif',
-                  fontSize: 22,
-                  flexGrow: 0,
-                  textAlign: 'right',
-                  width: '22%',
-                  ...timeStyle(item),
-                }}
+                style={[
+                  styles.time,
+                  item.actual && styles.actual,
+                  item.estimated && styles.estimated,
+                ]}
               >
                 {countdown(item, now)}
               </Text>
@@ -95,32 +102,11 @@ export default class Station extends Component {
       </Animated.View>
     )
   }
-
-  getStyle(a) {
-    const { style } = this.props
-    if (a.actual) return [style, styles.actual]
-    if (a.estimated) return [style, styles.estimated]
-    return [style]
-  }
-
   getTrainDestination(a) {
     const { stations } = this.props
 
     return toLocation(a, stations)
   }
-}
-
-function backgroundColor(a) {
-  if (/[02468]$/.test(a.id)) {
-    return { backgroundColor: '#fdd' }
-  }
-  return { backgroundColor: 'lightblue' }
-}
-
-function timeStyle(a) {
-  if (a.actual) return { fontWeight: 'bold', fontSize: 21 }
-  if (a.estimated) return { fontStyle: 'italic' }
-  return {}
 }
 
 function time(a) {
