@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     width: '22%',
   },
+  minute: { width: '12%' },
   actual: { fontWeight: 'bold', fontSize: 21 },
   estimated: { fontStyle: 'italic' },
   destination: { fontSize: 28, flexGrow: 1 },
@@ -75,6 +76,7 @@ export default class Train extends Component {
               <Text
                 style={[
                   styles.time,
+                  styles.minute,
                   item.Avgang && item.Avgang.actual && styles.actual,
                   item.Avgang && item.Avgang.estimated && styles.estimated,
                 ]}
