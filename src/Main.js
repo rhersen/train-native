@@ -5,8 +5,22 @@ import { stationName } from './util'
 import Train from './Train'
 
 const styles = StyleSheet.create({
-  text: { fontSize: 28 },
   heading: { fontWeight: 'bold', fontSize: 44, textAlign: 'center' },
+  actual: { fontWeight: 'bold', fontSize: 21 },
+  estimated: { fontStyle: 'italic' },
+  destination: { fontSize: 28, flexGrow: 1 },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  time: {
+    fontFamily: '"Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif',
+    fontSize: 22,
+    flexGrow: 0,
+    textAlign: 'right',
+    width: '22%',
+  },
 })
 
 export default class Main extends Component {
@@ -32,7 +46,7 @@ export default class Main extends Component {
             station={station}
             stations={stations}
             fetchTrain={fetchTrain}
-            style={styles.text}
+            pstyles={styles}
           />
         )}
         {Boolean(train.id) && (
@@ -40,7 +54,7 @@ export default class Main extends Component {
             train={train}
             stations={stations}
             fetchStation={fetchStation}
-            style={styles.text}
+            pstyles={styles}
           />
         )}
       </View>

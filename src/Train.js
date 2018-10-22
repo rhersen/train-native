@@ -11,24 +11,8 @@ import difference_in_minutes from 'date-fns/difference_in_minutes'
 import { stationName, time } from './util'
 
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  northbound: { backgroundColor: '#fdd' },
-  southbound: { backgroundColor: 'lightblue' },
-  time: {
-    fontFamily: '"Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif',
-    fontSize: 22,
-    flexGrow: 0,
-    textAlign: 'right',
-    width: '22%',
-  },
+  departed: { backgroundColor: 'lightblue' },
   minute: { width: '12%' },
-  actual: { fontWeight: 'bold', fontSize: 21 },
-  estimated: { fontStyle: 'italic' },
-  destination: { fontSize: 28, flexGrow: 1 },
   ahead: { backgroundColor: 'lightsteelblue' },
   ontime: { backgroundColor: 'palegreen' },
   delay1: { backgroundColor: 'lightyellow' },
@@ -48,13 +32,13 @@ export default class Train extends Component {
 
   render() {
     const { opacity } = this.state
-    const { train = {}, fetchStation } = this.props
+    const { train = {}, fetchStation, pstyles } = this.props
     return (
       <Animated.View style={{ opacity }}>
         <FlatList
           data={train.locations}
           renderItem={({ item }) => (
-            <View style={[styles.row, getStyle(item)]}>
+            <View style={[pstyles.row, getStyle(item)]}>
               <Text
                 onPress={() => {
                   Animated.timing(this.state.opacity, {
@@ -64,21 +48,21 @@ export default class Train extends Component {
                   }).start()
                   fetchStation(item.location)
                 }}
-                style={styles.destination}
+                style={pstyles.destination}
               >
                 {this.location(item)}
               </Text>
-              <Text style={styles.time}>
+              <Text style={pstyles.time}>
                 {item.Avgang &&
                   item.Avgang.advertised &&
                   item.Avgang.advertised.substr(11, 5)}
               </Text>
               <Text
                 style={[
-                  styles.time,
+                  pstyles.time,
                   styles.minute,
-                  item.Avgang && item.Avgang.actual && styles.actual,
-                  item.Avgang && item.Avgang.estimated && styles.estimated,
+                  item.Avgang && item.Avgang.actual && pstyles.actual,
+                  item.Avgang && item.Avgang.estimated && pstyles.estimated,
                 ]}
               >
                 {time(item.Avgang || {})}
@@ -98,7 +82,7 @@ export default class Train extends Component {
 function getStyle(a) {
   const avgang = a.Avgang || {}
   if (!avgang.actual) {
-    return styles.southbound
+    return styles.departed
   }
 
   const diff = difference_in_minutes(avgang.actual, avgang.advertised)

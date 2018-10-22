@@ -10,23 +10,8 @@ import {
 import { countdown, minute, toLocation } from './util'
 
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
   northbound: { backgroundColor: '#fdd' },
   southbound: { backgroundColor: 'lightblue' },
-  time: {
-    fontFamily: '"Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif',
-    fontSize: 22,
-    flexGrow: 0,
-    textAlign: 'right',
-    width: '22%',
-  },
-  actual: { fontWeight: 'bold', fontSize: 21 },
-  estimated: { fontStyle: 'italic' },
-  destination: { fontSize: 28, flexGrow: 1 },
 })
 
 export default class Station extends Component {
@@ -50,7 +35,7 @@ export default class Station extends Component {
 
   render() {
     const { opacity, now } = this.state
-    const { station = {}, fetchTrain } = this.props
+    const { station = {}, fetchTrain, pstyles } = this.props
     return (
       <Animated.View style={{ opacity }}>
         <FlatList
@@ -59,7 +44,7 @@ export default class Station extends Component {
           renderItem={({ item }) => (
             <View
               style={[
-                styles.row,
+                pstyles.row,
                 /[02468]$/.test(item.id)
                   ? styles.northbound
                   : styles.southbound,
@@ -74,24 +59,24 @@ export default class Station extends Component {
                   }).start()
                   return fetchTrain(item.id)
                 }}
-                style={styles.destination}
+                style={pstyles.destination}
               >
                 {this.getTrainDestination(item)}
               </Text>
               <Text
                 style={[
-                  styles.time,
-                  item.actual && styles.actual,
-                  item.estimated && styles.estimated,
+                  pstyles.time,
+                  item.actual && pstyles.actual,
+                  item.estimated && pstyles.estimated,
                 ]}
               >
                 {time(item)}
               </Text>
               <Text
                 style={[
-                  styles.time,
-                  item.actual && styles.actual,
-                  item.estimated && styles.estimated,
+                  pstyles.time,
+                  item.actual && pstyles.actual,
+                  item.estimated && pstyles.estimated,
                 ]}
               >
                 {countdown(item, now)}
