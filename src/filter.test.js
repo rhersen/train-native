@@ -86,6 +86,37 @@ describe('train', () => {
       ],
       to: 'Mr',
     }))
+
+  it('arrival without departure', () =>
+    expect(
+      filter.train([
+        {
+          ActivityType: 'Ankomst',
+          AdvertisedTimeAtLocation: '2018-10-23T07:17:00',
+          AdvertisedTrainIdent: '2614',
+          LocationSignature: 'Hu',
+          ModifiedTime: '2018-10-23T05:15:55.106Z',
+          ProductInformation: ['Pendeltåg', '41X'],
+          TimeAtLocation: '2018-10-23T07:17:00',
+          ToLocation: [{ LocationName: 'Mr', Priority: 1, Order: 0 }],
+          TrackAtLocation: '2',
+          ViaToLocation: [{ LocationName: 'Sci', Priority: 1, Order: 0 }],
+        },
+      ])
+    ).toEqual({
+      id: '2614',
+      locations: [
+        {
+          Ankomst: {
+            actual: '2018-10-23T07:17:00',
+            advertised: '2018-10-23T07:17:00',
+          },
+          key: 'Hu',
+          location: 'Hu',
+        },
+      ],
+      to: 'Mr',
+    }))
 })
 
 describe('station', () => {

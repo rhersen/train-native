@@ -11,6 +11,7 @@ import difference_in_minutes from 'date-fns/difference_in_minutes'
 import { stationName, time } from './util'
 
 const styles = StyleSheet.create({
+  arrived: { fontWeight: 'bold' },
   departed: { backgroundColor: 'lightblue' },
   minute: { width: '12%' },
   ahead: { backgroundColor: 'lightsteelblue' },
@@ -48,8 +49,9 @@ export default class Train extends Component {
                   }).start()
                   fetchStation(item.location)
                 }}
-                style={pstyles.destination}
+                style={[pstyles.destination, isArrived(item) && styles.arrived]}
               >
+                {isArrived(item) && '@'}
                 {this.location(item)}
               </Text>
               <Text style={pstyles.time}>
@@ -79,10 +81,14 @@ export default class Train extends Component {
   }
 }
 
+function isArrived(a) {
+  return (!a.Avgang || !a.Avgang.actual) && a.Ankomst && a.Ankomst.actual
+}
+
 function getStyle(a) {
   const avgang = a.Avgang || {}
   if (!avgang.actual) {
-    return styles.departed
+    return !isArrived(a) && styles.departed
   }
 
   const diff = difference_in_minutes(avgang.actual, avgang.advertised)
