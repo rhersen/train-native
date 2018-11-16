@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { Button, StyleSheet, Text, View } from 'react-native'
 import get from 'lodash.get'
-import map from 'lodash.map'
-import zipObject from 'lodash.zipobject'
+import keyby from 'lodash.keyby'
 import Main from './Main'
 import * as filter from './filter'
 
@@ -57,11 +56,8 @@ export default class App extends Component {
     this.setState({ statusText: response.statusText })
 
     if (response.status === 200) {
-      const json = await response.json()
-      const signatures = map(json, 'LocationSignature')
-      const names = map(json, 'AdvertisedShortLocationName')
       this.setState({
-        stations: zipObject(signatures, names),
+        stations: keyby(await response.json(), 'LocationSignature'),
       })
     }
   }

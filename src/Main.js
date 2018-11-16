@@ -67,6 +67,6 @@ export default class Main extends Component {
       train: { to: key },
     } = this.props
 
-    return key ? stations[key] : key
+    return key && stations[key] && stations[key].AdvertisedShortLocationName
   }
 }
