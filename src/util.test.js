@@ -14,7 +14,9 @@ describe('toLocation', () => {
     expect(toLocation({ to: 'Tul' })).toBe('Tul'))
 
   it('location with stations', () =>
-    expect(toLocation({ to: 'Tul' }, { Tul: 'Tullinge' })).toBe('Tullinge'))
+    expect(
+      toLocation({ to: 'Tul' }, { Tul: { AdvertisedLocationName: 'Tullinge' } })
+    ).toBe('Tullinge'))
 
   it('abbreviates names longer than "Södertälje C"', () => {
     const stations = getStations()
@@ -23,7 +25,7 @@ describe('toLocation', () => {
     expect(toLocation({ to: 'Sod' }, stations)).toBe('Odenplan')
     expect(toLocation({ to: 'Sci' }, stations)).toBe('City')
     expect(toLocation({ to: 'Sst' }, stations)).toBe('Södra')
-    expect(toLocation({ to: 'Söd' }, stations)).toBe('Södertälje H')
+    expect(toLocation({ to: 'Shd' }, stations)).toBe('Södertälje H')
   })
 })
 
@@ -59,97 +61,130 @@ describe('countdown', () => {
 
   it('shows nothing if train has passed', () =>
     expect(
-      countdown({ advertised: '2018-05-04T17:29:00' }, '2018-05-04T17:31:00')
+      countdown(
+        { advertised: '2018-05-04T17:29:00' },
+        undefined,
+        '2018-05-04T17:31:00'
+      )
     ).toBe(''))
 
   it('diffs against advertised', () =>
     expect(
-      countdown({ advertised: '2018-05-04T17:41:00' }, '2018-05-04T17:30:00')
+      countdown(
+        { advertised: '2018-05-04T17:41:00' },
+        undefined,
+        '2018-05-04T17:30:00'
+      )
     ).toBe('11min'))
 
   it('diffs against estimated', () =>
     expect(
       countdown(
         { advertised: '2018-05-04T17:41:00', estimated: '2018-05-04T17:45:00' },
+        undefined,
         '2018-05-04T17:30:00'
       )
     ).toBe('15min'))
 
   it('shows seconds if less than 10 minutes', () =>
     expect(
-      countdown({ advertised: '2018-05-04T17:39:00' }, '2018-05-04T17:30:27')
+      countdown(
+        { advertised: '2018-05-04T17:39:00' },
+        undefined,
+        '2018-05-04T17:30:27'
+      )
     ).toBe('8:33'))
 
   it('shows only seconds if less than 100 seconds', () =>
     expect(
-      countdown({ advertised: '2018-05-04T17:39:00' }, '2018-05-04T17:37:21')
+      countdown(
+        { advertised: '2018-05-04T17:39:00' },
+        undefined,
+        '2018-05-04T17:37:21'
+      )
     ).toBe('99s'))
 
   it('shows negative seconds up to 99', () =>
     expect(
-      countdown({ advertised: '2018-05-04T17:38:00' }, '2018-05-04T17:39:21')
+      countdown(
+        { advertised: '2018-05-04T17:38:00' },
+        undefined,
+        '2018-05-04T17:39:21'
+      )
     ).toBe('-81s'))
 
   it('pads seconds with zeroes', () =>
     expect(
-      countdown({ advertised: '2018-05-04T17:37:00' }, '2018-05-04T17:33:51')
+      countdown(
+        { advertised: '2018-05-04T17:37:00' },
+        undefined,
+        '2018-05-04T17:33:51'
+      )
     ).toBe('3:09'))
+
+  it('uses estimated over advertised', () =>
+    expect(
+      countdown(
+        { advertised: '2018-05-04T17:37:00', estimated: '2018-05-04T17:38:00' },
+        undefined,
+        '2018-05-04T17:33:51'
+      )
+    ).toBe('4:09'))
+
+  it('uses expected over estimated', () =>
+    expect(
+      countdown(
+        { advertised: '2018-05-04T17:37:00', estimated: '2018-05-04T17:38:00' },
+        '2018-05-04T17:38:17',
+        '2018-05-04T17:33:51'
+      )
+    ).toBe('4:26'))
 })
 
 function getStations() {
   return {
-    Arnc: 'Arlanda',
-    Bkb: 'Barkarby',
-    Bro: 'Bro',
-    Fas: 'Farsta strand',
-    Flb: 'Flemingsberg',
-    Gdv: 'Gröndalsviken',
-    Hgv: 'Häggvik',
-    Hfa: 'Hemfosa',
-    Hel: 'Helenelund',
-    Hu: 'Huddinge',
-    Hnd: 'Handen',
-    Jkb: 'Jakobsberg',
-    Jn: 'Järna',
-    Jbo: 'Jordbro',
-    Kda: 'Krigslida',
-    Kän: 'Kungsängen',
-    Khä: 'Kallhäll',
-    Mr: 'Märsta',
-    Ngd: 'Nynäsgård',
-    Nvk: 'Norrviken',
-    Mö: 'Mölnbo',
-    Nyh: 'Nynäshamn',
-    Rs: 'Rosersberg',
-    Sci: 'Stockholm City',
-    Rön: 'Rönninge',
-    Sub: 'Sundbyberg',
-    Spå: 'Spånga',
-    Skg: 'Skogås',
-    Ts: 'Tungelsta',
-    Söu: 'Södertälje Syd',
-    Tåd: 'Trångsund',
-    Sst: 'Stockholms södra',
-    Tu: 'Tumba',
-    Tul: 'Tullinge',
-    Ssä: 'Segersäng',
-    Sta: 'Stuvsta',
-    Udl: 'Ulriksdal',
-    Vhe: 'Västerhaninge',
-    Upv: 'Upplands Väsby',
-    Åbe: 'Årstaberg',
-    Äs: 'Älvsjö',
-    Öso: 'Ösmo',
-    Öte: 'Östertälje',
-    So: 'Solna',
-    Sod: 'Sthlm Odenplan',
-    Sol: 'Sollentuna',
-    R: 'Rotebro',
-    Söc: 'Södertälje C',
-    Söd: 'Södertälje hamn',
-    Bål: 'Bålsta',
-    Kn: 'Knivsta',
-    U: 'Uppsala',
-    Gn: 'Gnesta',
+    Arnc: stn('Arlanda'),
+    Bkb: stn('Barkarby'),
+    Bro: stn('Bro'),
+    Fas: stn('Farsta strand'),
+    Flb: stn('Flemingsberg'),
+    Gdv: stn('Gröndalsviken'),
+    Hgv: stn('Häggvik'),
+    Hfa: stn('Hemfosa'),
+    Hel: stn('Helenelund'),
+    Hu: stn('Huddinge'),
+    Hnd: stn('Handen'),
+    Jkb: stn('Jakobsberg'),
+    Jn: stn('Järna'),
+    Jbo: stn('Jordbro'),
+    Kda: stn('Krigslida'),
+    Mr: stn('Märsta'),
+    Ngd: stn('Nynäsgård'),
+    Nvk: stn('Norrviken'),
+    Nyh: stn('Nynäshamn'),
+    Rs: stn('Rosersberg'),
+    Sci: stn('Stockholm City'),
+    Sub: stn('Sundbyberg'),
+    Skg: stn('Skogås'),
+    Ts: stn('Tungelsta'),
+    Sst: stn('Stockholms södra'),
+    Tu: stn('Tumba'),
+    Tul: stn('Tullinge'),
+    Sta: stn('Stuvsta'),
+    Udl: stn('Ulriksdal'),
+    Vhe: stn('Västerhaninge'),
+    Upv: stn('Upplands Väsby'),
+    So: stn('Solna'),
+    Sod: stn('Sthlm Odenplan'),
+    Sol: stn('Sollentuna'),
+    R: stn('Rotebro'),
+    Shd: stn('Södertälje hamn'),
+    Kn: stn('Knivsta'),
+    U: stn('Uppsala'),
+    Gn: stn('Gnesta'),
   }
+}
+
+function stn(name) {
+  return { AdvertisedLocationName: name }
 }

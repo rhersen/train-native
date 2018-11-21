@@ -19,7 +19,8 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      station: [],
+      station: {},
+      sl: {},
       train: [],
       stations: {},
       statusText: 'OK',
@@ -29,13 +30,14 @@ export default class App extends Component {
   }
 
   render() {
-    const { station, train, stations, statusText } = this.state
+    const { station, sl, train, stations, statusText } = this.state
     const noData = !station.location && !train.id
     return (
       <View style={styles.box}>
         {!noData && (
           <Main
             station={station}
+            sl={sl}
             train={train}
             stations={stations}
             fetchTrain={trainIdent => this.fetchTrain(trainIdent)}
@@ -63,21 +65,32 @@ export default class App extends Component {
   }
 
   async fetchStation(locationSignature) {
-    const response = await fetch(
-      `/json/departures?locations=${locationSignature}&since=0:10&until=0:50`
+    const departuresResponse = await fetch(
+      `/json/departures?locations=${locationSignature}&since=0:10&until=1:00`
     )
 
-    this.setState({ statusText: response.statusText })
+    this.setState({ statusText: departuresResponse.statusText })
 
-    if (response.status === 200) {
-      const json = await response.json()
+    if (departuresResponse.status === 200) {
+      const station = filter.station(
+        get(
+          await departuresResponse.json(),
+          'RESPONSE.RESULT[0].TrainAnnouncement'
+        )
+      )
 
-      this.setState({
-        station: filter.station(
-          get(json, 'RESPONSE.RESULT[0].TrainAnnouncement')
-        ),
-        train: {},
-      })
+      this.setState({ station, train: {} })
+
+      const site = this.state.stations[locationSignature]
+      if (site && site.siteId) {
+        const slResponse = await fetch(`/json/sl?locations=${site.siteId}`)
+        this.setState({
+          sl: keyby(
+            (await slResponse.json()).ResponseData.Trains,
+            'JourneyNumber'
+          ),
+        })
+      }
     }
   }
 
@@ -86,7 +99,8 @@ export default class App extends Component {
     const json = await response.json()
 
     this.setState({
-      station: [],
+      station: {},
+      sl: {},
       train: filter.train(get(json, 'RESPONSE.RESULT[0].TrainAnnouncement')),
     })
   }

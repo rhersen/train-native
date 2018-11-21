@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from 'react-native'
-import { countdown, minute, toLocation } from './util'
+import { countdown, toLocation } from './util'
 
 const styles = StyleSheet.create({
   northbound: { backgroundColor: '#fdd' },
@@ -35,54 +35,57 @@ export default class Station extends Component {
 
   render() {
     const { opacity, now } = this.state
-    const { station = {}, fetchTrain, pstyles } = this.props
+    const { station = {}, sl = {}, fetchTrain, pstyles } = this.props
     return (
       <Animated.View style={{ opacity }}>
         <FlatList
           data={station.trains}
           extraData={now}
-          renderItem={({ item }) => (
-            <View
-              style={[
-                pstyles.row,
-                /[02468]$/.test(item.id)
-                  ? styles.northbound
-                  : styles.southbound,
-              ]}
-            >
-              <Text
-                onPress={() => {
-                  Animated.timing(this.state.opacity, {
-                    toValue: 0.3,
-                    duration: 1000,
-                    easing: Easing.out(Easing.cubic),
-                  }).start()
-                  return fetchTrain(item.id)
-                }}
-                style={pstyles.destination}
-              >
-                {this.getTrainDestination(item)}
-              </Text>
-              <Text
+          renderItem={({ item }) => {
+            const expected = sl[item.id] && sl[item.id].ExpectedDateTime
+            return (
+              <View
                 style={[
-                  pstyles.time,
-                  item.actual && pstyles.actual,
-                  item.estimated && pstyles.estimated,
+                  pstyles.row,
+                  /[02468]$/.test(item.id)
+                    ? styles.northbound
+                    : styles.southbound,
                 ]}
               >
-                {time(item)}
-              </Text>
-              <Text
-                style={[
-                  pstyles.time,
-                  item.actual && pstyles.actual,
-                  item.estimated && pstyles.estimated,
-                ]}
-              >
-                {countdown(item, now)}
-              </Text>
-            </View>
-          )}
+                <Text
+                  onPress={() => {
+                    Animated.timing(this.state.opacity, {
+                      toValue: 0.3,
+                      duration: 1000,
+                      easing: Easing.out(Easing.cubic),
+                    }).start()
+                    return fetchTrain(item.id)
+                  }}
+                  style={pstyles.destination}
+                >
+                  {this.getTrainDestination(item)}
+                </Text>
+                <Text
+                  style={[
+                    pstyles.time,
+                    item.actual && pstyles.actual,
+                    item.estimated && pstyles.estimated,
+                  ]}
+                >
+                  {time(item, expected)}
+                </Text>
+                <Text
+                  style={[
+                    pstyles.time,
+                    item.actual && pstyles.actual,
+                    item.estimated && pstyles.estimated,
+                  ]}
+                >
+                  {countdown(item, expected, now)}
+                </Text>
+              </View>
+            )
+          }}
         />
       </Animated.View>
     )
@@ -94,18 +97,10 @@ export default class Station extends Component {
   }
 }
 
-function time(a) {
-  if (a.AdvertisedTimeAtLocation) {
-    return (
-      a.AdvertisedTimeAtLocation.substr(11, 2) +
-      minute(a.AdvertisedTimeAtLocation) +
-      minute(a.EstimatedTimeAtLocation) +
-      minute(a.TimeAtLocation)
-    )
-  }
-
+function time(a, expected) {
   if (a.advertised) {
     if (a.actual) return a.actual.substr(11, 5)
+    if (expected) return expected.substr(11)
     if (a.estimated) return a.estimated.substr(11, 5)
     return a.advertised.substr(11, 5)
   }

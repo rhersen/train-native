@@ -27,6 +27,7 @@ export default class Main extends Component {
   render() {
     const {
       station = {},
+      sl = {},
       stations,
       train = {},
       fetchStation,
@@ -44,6 +45,7 @@ export default class Main extends Component {
         {Boolean(station.location) && (
           <Station
             station={station}
+            sl={sl}
             stations={stations}
             fetchTrain={fetchTrain}
             pstyles={styles}

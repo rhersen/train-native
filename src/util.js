@@ -41,8 +41,8 @@ export function minute(t) {
   return t ? t.substr(13, 3) : '   '
 }
 
-export function countdown({ advertised, estimated } = {}, now) {
-  const t = estimated || advertised
+export function countdown({ advertised, estimated } = {}, expected, now) {
+  const t = expected || estimated || advertised
   if (t) {
     const m = difference_in_minutes(t, now)
     const s = difference_in_seconds(t, now)

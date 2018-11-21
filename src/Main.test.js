@@ -112,7 +112,13 @@ test('does not crash if the train has no announcements', () => {
 
 function stations() {
   return {
-    Tul: 'Tullinge',
-    Sub: 'Sundbyberg',
+    Tul: {
+      AdvertisedShortLocationName: 'Tullinge',
+      AdvertisedLocationName: 'Tullinge',
+    },
+    Sub: {
+      AdvertisedShortLocationName: 'Sundbyberg',
+      AdvertisedLocationName: 'Sundbyberg',
+    },
   }
 }
