@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native'
 import difference_in_minutes from 'date-fns/difference_in_minutes'
-import { stationName, time } from './util'
+import { stationName, minute } from './util'
 
 const styles = StyleSheet.create({
   arrived: { fontWeight: 'bold' },
@@ -67,7 +67,7 @@ export default class Train extends Component {
                   item.Avgang && item.Avgang.estimated && pstyles.estimated,
                 ]}
               >
-                {time(item.Avgang || {})}
+                {minute(item.Avgang || {})}
               </Text>
             </View>
           )}

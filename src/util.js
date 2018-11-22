@@ -27,7 +27,7 @@ export function stationName(locationSignature, stations = []) {
   return fullName
 }
 
-export function time(a) {
+export function minute(a) {
   if (a.actual) {
     return a.actual.substr(14, 2)
   }
@@ -35,10 +35,6 @@ export function time(a) {
   if (a.estimated) {
     return a.estimated.substr(14, 2)
   }
-}
-
-export function minute(t) {
-  return t ? t.substr(13, 3) : '   '
 }
 
 export function countdown({ advertised, estimated } = {}, expected, now) {
@@ -53,5 +49,14 @@ export function countdown({ advertised, estimated } = {}, expected, now) {
       return `${m}:${seconds < 10 ? '0' : ''}${seconds}`
     }
     return `${m}min`
+  }
+}
+
+export function trainTime(a, expected) {
+  if (a.advertised) {
+    if (a.actual) return a.actual.substr(11, 5)
+    if (expected && !expected.endsWith(':00')) return expected.substr(13)
+    if (a.estimated) return a.estimated.substr(11, 5)
+    return a.advertised.substr(11, 5)
   }
 }

@@ -1,4 +1,4 @@
-import { activity, countdown, time, toLocation } from './util'
+import { activity, countdown, minute, toLocation, trainTime } from './util'
 
 describe('activity', () => {
   it('empty', () => expect(activity({})).toBe('   '))
@@ -30,18 +30,18 @@ describe('toLocation', () => {
 })
 
 describe('time', () => {
-  it('empty', () => expect(time({})).toBeUndefined())
+  it('empty', () => expect(minute({})).toBeUndefined())
 
   it('advertised', () =>
     expect(
-      time({
+      minute({
         advertised: '2018-05-04T17:30:00',
       })
     ).toBeUndefined())
 
   it('estimated', () =>
     expect(
-      time({
+      minute({
         advertised: '2018-05-04T17:30:00',
         estimated: '2018-05-04T17:31:00',
       })
@@ -49,7 +49,7 @@ describe('time', () => {
 
   it('actual', () =>
     expect(
-      time({
+      minute({
         advertised: '2018-05-04T17:30:00',
         actual: '2018-05-04T17:30:00',
       })
@@ -139,6 +139,58 @@ describe('countdown', () => {
         '2018-05-04T17:33:51'
       )
     ).toBe('4:26'))
+})
+
+describe('trainTime', () => {
+  test('empty', () => {
+    expect(trainTime({})).toBeUndefined()
+  })
+
+  test('advertised', () => {
+    expect(trainTime({ advertised: '2018-05-04T17:37:00' })).toBe('17:37')
+  })
+
+  test('actual', () => {
+    expect(
+      trainTime({
+        advertised: '2018-05-04T17:30:00',
+        actual: '2018-05-04T17:37:00',
+      })
+    ).toBe('17:37')
+  })
+
+  test('estimated', () => {
+    expect(
+      trainTime({
+        advertised: '2018-05-04T17:30:00',
+        estimated: '2018-05-04T17:37:00',
+      })
+    ).toBe('17:37')
+  })
+
+  test('expected without seconds', () => {
+    expect(
+      trainTime(
+        {
+          advertised: '2018-05-04T17:30:00',
+          estimated: '2018-05-04T17:37:00',
+        },
+        '2018-05-04T17:37:00'
+      )
+    ).toBe('17:37')
+  })
+
+  test('expected with seconds', () => {
+    expect(
+      trainTime(
+        {
+          advertised: '2018-05-04T17:30:00',
+          estimated: '2018-05-04T17:37:00',
+        },
+        '2018-05-04T17:37:13'
+      )
+    ).toBe(':37:13')
+  })
 })
 
 function getStations() {

@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from 'react-native'
-import { countdown, toLocation } from './util'
+import { countdown, toLocation, trainTime } from './util'
 
 const styles = StyleSheet.create({
   northbound: { backgroundColor: '#fdd' },
@@ -72,7 +72,7 @@ export default class Station extends Component {
                     item.estimated && pstyles.estimated,
                   ]}
                 >
-                  {time(item, expected)}
+                  {trainTime(item, expected)}
                 </Text>
                 <Text
                   style={[
@@ -94,14 +94,5 @@ export default class Station extends Component {
     const { stations } = this.props
 
     return toLocation(a, stations)
-  }
-}
-
-function time(a, expected) {
-  if (a.advertised) {
-    if (a.actual) return a.actual.substr(11, 5)
-    if (expected) return expected.substr(11)
-    if (a.estimated) return a.estimated.substr(11, 5)
-    return a.advertised.substr(11, 5)
   }
 }
