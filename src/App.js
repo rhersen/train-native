@@ -26,7 +26,7 @@ export default class App extends Component {
       statusText: 'OK',
     }
     this.fetchStations()
-    this.fetchStation('Sst')
+    this.fetchStation('Cst')
   }
 
   render() {
@@ -53,20 +53,23 @@ export default class App extends Component {
   }
 
   async fetchStations() {
-    const response = await fetch('/json/pendel')
+    const response = await fetch('/json/stations')
 
     this.setState({ statusText: response.statusText })
 
     if (response.status === 200) {
       this.setState({
-        stations: keyby(await response.json(), 'LocationSignature'),
+        stations: keyby(
+          get(await response.json(), 'RESPONSE.RESULT[0].TrainStation'),
+          'LocationSignature'
+        ),
       })
     }
   }
 
   async fetchStation(locationSignature) {
     const departuresResponse = await fetch(
-      `/json/departures?locations=${locationSignature}&since=0:10&until=1:00`
+      `/json/departures?locations=${locationSignature}&since=3:00&until=3:00&type=sj%20intercity`
     )
 
     this.setState({ statusText: departuresResponse.statusText })
